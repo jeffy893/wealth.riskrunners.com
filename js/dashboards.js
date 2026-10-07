@@ -19,23 +19,63 @@
     var TIER_MED = '#059669';   /* MEDIUM tier                                */
     var TIER_HIGH = '#dc2626';  /* HIGH tier                                  */
 
+    /* §5.3b time-utilization category colors (distinct, AA-legible on dark).  */
+    var CAT_WORK = '#4f7cff';     /* blue   — Work            */
+    var CAT_HEALTH = '#2fb8a0';   /* teal   — Health/Fitness  */
+    var CAT_FAMILY = '#e6aa32';   /* amber  — Family/Social   */
+    var CAT_LEISURE = '#9678ff';  /* violet — Leisure/Golf    */
+    var CAT_ADMIN = '#888';       /* grey   — Admin/Finance   */
+
     /* ========================================================================
        §5.3 ROLLING METRICS — locked 12-point weekly series (design §5.3).
        Representative figures defined by the design (NOT a pipeline output).
-       W12 is the golf-cart week; spend[11]=12514 breaches bandUpper[11]=11288.
+       W12 is the golf-cart week; spend[11]=12514 breaches bandUpper[11]=2632.
        ===================================================================== */
     var rolling = {
         labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10', 'W11', 'W12'],
         // weekly discretionary money spend ($), a representative stochastic series;
-        // normal weeks vary ~$180-$510, W12 is the $12,500 golf-cart spike (Obs row 11)
-        spend: [285, 420, 190, 510, 340, 265, 455, 180, 390, 230, 300, 12514],
-        // 4-week (~30-day) trailing rolling average of `spend`, rounded to $1
-        rollingAvg: [285, 352, 298, 351, 365, 326, 392, 310, 322, 314, 275, 3358],
+        // normal weeks live ~$1,500-$2,950 (visible texture + band on a linear axis),
+        // W12 is the $12,500 golf-cart spike (Obs row 11) — ~4.75x the detection band
+        spend: [1850, 2400, 1600, 2950, 2100, 1750, 2650, 1500, 2300, 1950, 2500, 12514],
+        // 4-week (~30-day) trailing rolling average of `spend`, rounded to $1;
+        // W12 holds the W11 baseline (the spike is not folded into its own detector)
+        rollingAvg: [1850, 2125, 1950, 2200, 2262, 2100, 2362, 2000, 2050, 2100, 2062, 2062],
         // trailing mean +/- 1.5 sigma band (sigma of the 4-week window), rounded to $1;
-        // normal weeks stay inside the band, only W12 breaches bandUpper
-        bandUpper: [285, 454, 440, 535, 541, 504, 536, 462, 483, 483, 393, 11288],
-        bandLower: [285, 251, 157, 167, 189, 148, 249, 158, 162, 145, 157, 0],
+        // normal weeks stay inside the band; W12's band is held at the pre-spike
+        // baseline so the $12,500 clearly breaches a normal-height ceiling
+        bandUpper: [1850, 2538, 2451, 2981, 2996, 2885, 3063, 2647, 2727, 2739, 2632, 2632],
+        bandLower: [1850, 1712, 1449, 1419, 1529, 1315, 1662, 1353, 1373, 1461, 1493, 1493],
         breachIndex: 11  // zero-based -> W12, first i where spend[i] > bandUpper[i]
+    };
+
+    /* ========================================================================
+       §5.3b TIME UTILIZATION — weekly hours per activity category, rendered as
+       a 100%-stacked bar (share of logged time) so a week's whole COMPOSITION
+       is visible. Anomaly detection here is BEHAVIORAL DRIFT, not a single
+       spike: the Leisure/Golf share is tracked against its own trailing 4-week
+       baseline, and a week breaches when its share exceeds mean + 1.5 sigma.
+       W12 is the golf-cart week — Leisure/Golf balloons to 36% while Health and
+       Family collapse, so the TIME signal corroborates the MONEY spike in §5.3.
+       Hours are illustrative; shares are hours / weekly logged total, rounded.
+       ===================================================================== */
+    var timeUse = {
+        labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10', 'W11', 'W12'],
+        categories: ['Work', 'Health/Fitness', 'Family/Social', 'Leisure/Golf', 'Admin/Finance'],
+        // SHARE (% of weekly logged time) per category — each week's five values sum to ~100
+        shares: {
+            work:    [52, 55, 51, 58, 53, 53, 50, 54, 51, 52, 55, 47],
+            health:  [12, 10, 13,  9, 11, 13, 10, 11, 12, 10, 11,  3],
+            family:  [21, 18, 22, 17, 20, 18, 23, 19, 20, 22, 18,  7],
+            leisure: [ 9, 10,  9, 10,  9, 10,  9, 10,  9, 10,  9, 36],
+            admin:   [ 6,  7,  6,  5,  7,  6,  7,  6,  7,  6,  6,  6]
+        },
+        // Behavioral-drift detector on the Leisure/Golf share: trailing baseline
+        // and the mean+1.5 sigma threshold it is evaluated against (pre-week baseline).
+        focus: 'Leisure/Golf',
+        focusShare:   [9, 10, 9, 10, 9, 10, 9, 10, 9, 10, 9, 36],
+        driftBaseline:[9,  9, 10, 9, 10, 10, 10, 10, 10, 10, 10, 10],
+        driftThreshold:[12, 12, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+        breachIndex: 11  // W12 — Leisure share 36% breaches the ~10% drift threshold
     };
 
     /* ========================================================================
@@ -93,17 +133,19 @@
 
     /* ── Chart canvas ids (also recorded in FEAT-003 findings) ───────────── */
     var ROLLING_CANVAS_ID = 'rolling-metrics-chart';
+    var TIMEUSE_CANVAS_ID = 'time-use-chart';
     var FUNDING_CANVAS_ID = 'funding-chart';
-    var FALLBACK_NOTE_ID = 'charts-fallback-note';
 
     /* ────────────────────────────────────────────────────────────────────
        §10.2 fallback: if Chart.js failed to load, reveal the role=status note
        (which sits beside the always-present paired tables) and do NOT throw.
        ──────────────────────────────────────────────────────────────────── */
     function showFallbackNote() {
-        var note = document.getElementById(FALLBACK_NOTE_ID);
-        if (note) {
-            note.hidden = false;
+        // Reveal every per-section fallback note (money §5.3, time §5.3b, funding
+        // §5.5); each sits beside its always-present paired table.
+        var notes = document.querySelectorAll('.charts-fallback');
+        for (var i = 0; i < notes.length; i++) {
+            notes[i].hidden = false;
         }
     }
 
@@ -188,6 +230,70 @@
         });
     }
 
+    /* §5.3b time-utilization chart: a 100%-stacked bar of each week's activity
+       composition (share of logged time), plus a Leisure/Golf drift-threshold
+       line and a breach marker on the anomalous week. The W12 bar visibly warps
+       — violet (Leisure/Golf) engulfs it while teal (Health) and amber (Family)
+       shrink — the time signal corroborating the §5.3 money spike. */
+    function buildTimeUseChart(ctx) {
+        var s = timeUse.shares;
+        // Highlight the breach bar: Leisure segment turns risk-red on W12.
+        var leisureColors = timeUse.labels.map(function (_, i) {
+            return i === timeUse.breachIndex ? RISK : CAT_LEISURE;
+        });
+        // Breach marker: the Leisure share, plotted only on the breach week.
+        var breachPoints = timeUse.focusShare.map(function (v, i) {
+            return i === timeUse.breachIndex ? v : null;
+        });
+
+        var options = baseOptions('Weekly time utilization (share of logged hours) with Leisure/Golf drift detection');
+        // Stacked, 0\u2013100% axis for the bar datasets.
+        options.scales.x.stacked = true;
+        options.scales.y.stacked = true;
+        options.scales.y.min = 0;
+        options.scales.y.max = 100;
+        options.scales.y.ticks.callback = function (v) { return v + '%'; };
+
+        return new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: timeUse.labels,
+                datasets: [
+                    { label: 'Work', data: s.work, backgroundColor: CAT_WORK, stack: 'time', order: 2 },
+                    { label: 'Health/Fitness', data: s.health, backgroundColor: CAT_HEALTH, stack: 'time', order: 2 },
+                    { label: 'Family/Social', data: s.family, backgroundColor: CAT_FAMILY, stack: 'time', order: 2 },
+                    { label: 'Leisure/Golf', data: s.leisure, backgroundColor: leisureColors, stack: 'time', order: 2 },
+                    { label: 'Admin/Finance', data: s.admin, backgroundColor: CAT_ADMIN, stack: 'time', order: 2 },
+                    {
+                        label: 'Leisure/Golf drift threshold',
+                        type: 'line',
+                        data: timeUse.driftThreshold,
+                        borderColor: MUTED,
+                        backgroundColor: MUTED,
+                        borderWidth: 2,
+                        borderDash: [6, 4],
+                        pointRadius: 0,
+                        fill: false,
+                        order: 1
+                    },
+                    {
+                        label: 'Behavioral-drift breach (W12 Leisure 36%)',
+                        type: 'line',
+                        data: breachPoints,
+                        borderColor: RISK,
+                        backgroundColor: RISK,
+                        pointRadius: 7,
+                        pointHoverRadius: 9,
+                        pointStyle: 'rectRot',
+                        showLine: false,
+                        order: 0
+                    }
+                ]
+            },
+            options: options
+        });
+    }
+
     /* §5.5 funding chart — total-balance growth to the goal, 10%- vs 20%-down,
        with the three tier colors represented in the per-cycle legend copy. */
     function buildFundingChart(ctx) {
@@ -251,6 +357,17 @@
                 buildRollingChart(rollingCanvas.getContext('2d'));
             } catch (err) {
                 console.error('dashboards.js: failed to build chart #' + ROLLING_CANVAS_ID, err);
+            }
+        }
+
+        var timeUseCanvas = document.getElementById(TIMEUSE_CANVAS_ID);
+        if (!timeUseCanvas) {
+            console.warn('dashboards.js: canvas not found: #' + TIMEUSE_CANVAS_ID);
+        } else {
+            try {
+                buildTimeUseChart(timeUseCanvas.getContext('2d'));
+            } catch (err) {
+                console.error('dashboards.js: failed to build chart #' + TIMEUSE_CANVAS_ID, err);
             }
         }
 

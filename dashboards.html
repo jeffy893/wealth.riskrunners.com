@@ -191,7 +191,7 @@
     <section class="section" id="rolling-metrics" aria-labelledby="rolling-heading">
         <div class="section-inner">
             <h2 id="rolling-heading" class="section-title">§5.3 — Rolling metrics</h2>
-            <p class="section-lead">Weekly money-spend (W1–W12, 2026-07-06 → 2026-09-28) with its 4-week trailing rolling average and a ±1.5σ deviation band. Normal weeks range roughly $180–$510 and stay inside the band; the first and only breach is W12 — the $12,500 golf-cart spike (Observation row 11) — marked in risk red.</p>
+            <p class="section-lead">Weekly money-spend (W1–W12, 2026-07-06 → 2026-09-28) with its 4-week trailing rolling average and a ±1.5σ deviation band. Normal weeks range roughly $1,500–$2,950 and stay comfortably inside the band. W12's $12,500 golf-cart purchase (Observation row 11) is evaluated against the pre-spike band — it clears the ~$2,632 ceiling by roughly 4.75×, so it's flagged as a detected anomaly, marked in risk red.</p>
             <figure class="mockup chart-figure">
                 <figcaption class="mockup-caption">Desktop · Rolling money-spend chart</figcaption>
                 <div class="device-frame device-desktop">
@@ -214,18 +214,69 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><th scope="row">W1</th><td>285</td><td>285</td><td>285</td><td>285</td></tr>
-                                    <tr><th scope="row">W2</th><td>420</td><td>352</td><td>454</td><td>251</td></tr>
-                                    <tr><th scope="row">W3</th><td>190</td><td>298</td><td>440</td><td>157</td></tr>
-                                    <tr><th scope="row">W4</th><td>510</td><td>351</td><td>535</td><td>167</td></tr>
-                                    <tr><th scope="row">W5</th><td>340</td><td>365</td><td>541</td><td>189</td></tr>
-                                    <tr><th scope="row">W6</th><td>265</td><td>326</td><td>504</td><td>148</td></tr>
-                                    <tr><th scope="row">W7</th><td>455</td><td>392</td><td>536</td><td>249</td></tr>
-                                    <tr><th scope="row">W8</th><td>180</td><td>310</td><td>462</td><td>158</td></tr>
-                                    <tr><th scope="row">W9</th><td>390</td><td>322</td><td>483</td><td>162</td></tr>
-                                    <tr><th scope="row">W10</th><td>230</td><td>314</td><td>483</td><td>145</td></tr>
-                                    <tr><th scope="row">W11</th><td>300</td><td>275</td><td>393</td><td>157</td></tr>
-                                    <tr class="feed-row-anomaly"><th scope="row">W12</th><td>12514</td><td>3358</td><td>11288</td><td>0</td></tr>
+                                    <tr><th scope="row">W1</th><td>1850</td><td>1850</td><td>1850</td><td>1850</td></tr>
+                                    <tr><th scope="row">W2</th><td>2400</td><td>2125</td><td>2538</td><td>1712</td></tr>
+                                    <tr><th scope="row">W3</th><td>1600</td><td>1950</td><td>2451</td><td>1449</td></tr>
+                                    <tr><th scope="row">W4</th><td>2950</td><td>2200</td><td>2981</td><td>1419</td></tr>
+                                    <tr><th scope="row">W5</th><td>2100</td><td>2262</td><td>2996</td><td>1529</td></tr>
+                                    <tr><th scope="row">W6</th><td>1750</td><td>2100</td><td>2885</td><td>1315</td></tr>
+                                    <tr><th scope="row">W7</th><td>2650</td><td>2362</td><td>3063</td><td>1662</td></tr>
+                                    <tr><th scope="row">W8</th><td>1500</td><td>2000</td><td>2647</td><td>1353</td></tr>
+                                    <tr><th scope="row">W9</th><td>2300</td><td>2050</td><td>2727</td><td>1373</td></tr>
+                                    <tr><th scope="row">W10</th><td>1950</td><td>2100</td><td>2739</td><td>1461</td></tr>
+                                    <tr><th scope="row">W11</th><td>2500</td><td>2062</td><td>2632</td><td>1493</td></tr>
+                                    <tr class="feed-row-anomaly"><th scope="row">W12</th><td>12514</td><td>2062</td><td>2632</td><td>1493</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </figure>
+        </div>
+    </section>
+
+    <!-- §5.3b Time utilization (desktop frame, Chart.js) -->
+    <section class="section" id="time-utilization" aria-labelledby="timeuse-heading">
+        <div class="section-inner">
+            <h2 id="timeuse-heading" class="section-title">§5.3b — Time utilization &amp; behavioral drift</h2>
+            <p class="section-lead">Money is only half the signal. This view treats <strong>how the Client spends their time</strong> as a first-class behavior: each week is a full bar split into activity shares (Work, Health/Fitness, Family/Social, Leisure/Golf, Admin/Finance), derived from calendar <code>time</code> Observations. Anomaly detection here is not a single spike but <strong>behavioral drift</strong> — the Leisure/Golf share is tracked against its own trailing baseline, and W12 breaches it: Leisure/Golf balloons to <strong class="risk-figure">36%</strong> of logged time (34 h) while Health collapses to 3% and Family to 7%. The <em>time</em> signal corroborates the <em>money</em> spike in §5.3 — the same week as the $12,500 golf-cart purchase.</p>
+            <figure class="mockup chart-figure">
+                <figcaption class="mockup-caption">Desktop · Weekly time-utilization composition</figcaption>
+                <div class="device-frame device-desktop">
+                    <div class="device-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                    <div class="device-screen">
+                        <p id="time-charts-fallback-note" class="charts-fallback" role="status" hidden>Charts unavailable offline — see the table below.</p>
+                        <div class="chart-canvas-wrap">
+                            <canvas id="time-use-chart" aria-label="100% stacked bar chart of weekly time utilization W1 to W12 by activity share, with a Leisure/Golf drift-threshold line; the W12 bar is dominated by Leisure/Golf at 36% and is flagged as a behavioral-drift anomaly. The data table below carries the same numbers." role="img"></canvas>
+                        </div>
+                        <div class="table-scroll">
+                            <table class="data-table">
+                                <caption>§5.3b weekly time utilization — hours per activity (locked)</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Week</th>
+                                        <th scope="col">Work (h)</th>
+                                        <th scope="col">Health (h)</th>
+                                        <th scope="col">Family (h)</th>
+                                        <th scope="col">Leisure/Golf (h)</th>
+                                        <th scope="col">Admin (h)</th>
+                                        <th scope="col">Leisure share</th>
+                                        <th scope="col">Drift threshold</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><th scope="row">W1</th><td>45</td><td>10</td><td>18</td><td>8</td><td>5</td><td>9%</td><td>12%</td></tr>
+                                    <tr><th scope="row">W2</th><td>48</td><td>9</td><td>16</td><td>9</td><td>6</td><td>10%</td><td>12%</td></tr>
+                                    <tr><th scope="row">W3</th><td>44</td><td>11</td><td>19</td><td>8</td><td>5</td><td>9%</td><td>10%</td></tr>
+                                    <tr><th scope="row">W4</th><td>50</td><td>8</td><td>15</td><td>9</td><td>4</td><td>10%</td><td>10%</td></tr>
+                                    <tr><th scope="row">W5</th><td>46</td><td>10</td><td>17</td><td>8</td><td>6</td><td>9%</td><td>10%</td></tr>
+                                    <tr><th scope="row">W6</th><td>47</td><td>12</td><td>16</td><td>9</td><td>5</td><td>10%</td><td>10%</td></tr>
+                                    <tr><th scope="row">W7</th><td>43</td><td>9</td><td>20</td><td>8</td><td>6</td><td>9%</td><td>10%</td></tr>
+                                    <tr><th scope="row">W8</th><td>49</td><td>10</td><td>17</td><td>9</td><td>5</td><td>10%</td><td>10%</td></tr>
+                                    <tr><th scope="row">W9</th><td>45</td><td>11</td><td>18</td><td>8</td><td>6</td><td>9%</td><td>10%</td></tr>
+                                    <tr><th scope="row">W10</th><td>46</td><td>9</td><td>19</td><td>9</td><td>5</td><td>10%</td><td>10%</td></tr>
+                                    <tr><th scope="row">W11</th><td>48</td><td>10</td><td>16</td><td>8</td><td>5</td><td>9%</td><td>10%</td></tr>
+                                    <tr class="feed-row-anomaly"><th scope="row">W12</th><td>44</td><td>3</td><td>7</td><td>34</td><td>6</td><td>36%</td><td>10%</td></tr>
                                 </tbody>
                             </table>
                         </div>
