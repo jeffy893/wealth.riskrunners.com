@@ -22,17 +22,19 @@
     /* ========================================================================
        §5.3 ROLLING METRICS — locked 12-point weekly series (design §5.3).
        Representative figures defined by the design (NOT a pipeline output).
-       W12 is the golf-cart week; spend[11]=12514 breaches bandUpper[11]=2764.
+       W12 is the golf-cart week; spend[11]=12514 breaches bandUpper[11]=11288.
        ===================================================================== */
     var rolling = {
         labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10', 'W11', 'W12'],
-        // weekly discretionary money spend ($), the raw series
-        spend: [90, 120, 85, 140, 110, 70, 130, 160, 180, 150, 120, 12514],
-        // 30-day (~4-week) trailing rolling average of `spend`, rounded to $1
-        rollingAvg: [90, 105, 98, 109, 114, 101, 113, 118, 135, 155, 153, 2654],
-        // +/-1 sigma band around the trailing baseline, rounded to $1
-        bandUpper: [200, 215, 208, 219, 224, 211, 223, 228, 245, 265, 263, 2764],
-        bandLower: [0, 0, 0, 0, 4, 0, 3, 8, 25, 45, 43, 2544],
+        // weekly discretionary money spend ($), a representative stochastic series;
+        // normal weeks vary ~$180-$510, W12 is the $12,500 golf-cart spike (Obs row 11)
+        spend: [285, 420, 190, 510, 340, 265, 455, 180, 390, 230, 300, 12514],
+        // 4-week (~30-day) trailing rolling average of `spend`, rounded to $1
+        rollingAvg: [285, 352, 298, 351, 365, 326, 392, 310, 322, 314, 275, 3358],
+        // trailing mean +/- 1.5 sigma band (sigma of the 4-week window), rounded to $1;
+        // normal weeks stay inside the band, only W12 breaches bandUpper
+        bandUpper: [285, 454, 440, 535, 541, 504, 536, 462, 483, 483, 393, 11288],
+        bandLower: [285, 251, 157, 167, 189, 148, 249, 158, 162, 145, 157, 0],
         breachIndex: 11  // zero-based -> W12, first i where spend[i] > bandUpper[i]
     };
 
@@ -134,7 +136,7 @@
                 labels: rolling.labels,
                 datasets: [
                     {
-                        label: 'Band upper (+1\u03C3)',
+                        label: 'Band upper (+1.5\u03C3)',
                         data: rolling.bandUpper,
                         borderColor: 'rgba(136,136,136,0.35)',
                         backgroundColor: 'rgba(136,136,136,0.12)',
@@ -143,7 +145,7 @@
                         fill: '+1'  // translucent grey band down to the next dataset (bandLower)
                     },
                     {
-                        label: 'Band lower (-1\u03C3)',
+                        label: 'Band lower (-1.5\u03C3)',
                         data: rolling.bandLower,
                         borderColor: 'rgba(136,136,136,0.35)',
                         backgroundColor: 'rgba(136,136,136,0.12)',
@@ -182,7 +184,7 @@
                     }
                 ]
             },
-            options: baseOptions('Rolling money-spend vs \u00B11\u03C3 deviation band (W1\u2013W12)')
+            options: baseOptions('Rolling money-spend vs \u00B11.5\u03C3 deviation band (W1\u2013W12)')
         });
     }
 

@@ -191,7 +191,7 @@
     <section class="section" id="rolling-metrics" aria-labelledby="rolling-heading">
         <div class="section-inner">
             <h2 id="rolling-heading" class="section-title">§5.3 — Rolling metrics</h2>
-            <p class="section-lead">Weekly money-spend (W1–W12, 2026-07-06 → 2026-09-28) with its trailing rolling average and a ±1σ deviation band. The first breach is W12 — the $12,500 golf-cart spike (Observation row 11) — marked in risk red.</p>
+            <p class="section-lead">Weekly money-spend (W1–W12, 2026-07-06 → 2026-09-28) with its 4-week trailing rolling average and a ±1.5σ deviation band. Normal weeks range roughly $180–$510 and stay inside the band; the first and only breach is W12 — the $12,500 golf-cart spike (Observation row 11) — marked in risk red.</p>
             <figure class="mockup chart-figure">
                 <figcaption class="mockup-caption">Desktop · Rolling money-spend chart</figcaption>
                 <div class="device-frame device-desktop">
@@ -199,7 +199,7 @@
                     <div class="device-screen">
                         <p id="charts-fallback-note" class="charts-fallback" role="status" hidden>Charts unavailable offline — see the table below.</p>
                         <div class="chart-canvas-wrap">
-                            <canvas id="rolling-metrics-chart" aria-label="Line chart of weekly money spend W1 to W12 with rolling average and a plus-or-minus one sigma deviation band; the W12 point breaches the band. The data table below carries the same numbers." role="img"></canvas>
+                            <canvas id="rolling-metrics-chart" aria-label="Line chart of weekly money spend W1 to W12 with a 4-week rolling average and a plus-or-minus 1.5 sigma deviation band; normal weeks stay inside the band and the W12 point breaches it. The data table below carries the same numbers." role="img"></canvas>
                         </div>
                         <div class="table-scroll">
                             <table class="data-table">
@@ -214,18 +214,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><th scope="row">W1</th><td>90</td><td>90</td><td>200</td><td>0</td></tr>
-                                    <tr><th scope="row">W2</th><td>120</td><td>105</td><td>215</td><td>0</td></tr>
-                                    <tr><th scope="row">W3</th><td>85</td><td>98</td><td>208</td><td>0</td></tr>
-                                    <tr><th scope="row">W4</th><td>140</td><td>109</td><td>219</td><td>0</td></tr>
-                                    <tr><th scope="row">W5</th><td>110</td><td>114</td><td>224</td><td>4</td></tr>
-                                    <tr><th scope="row">W6</th><td>70</td><td>101</td><td>211</td><td>0</td></tr>
-                                    <tr><th scope="row">W7</th><td>130</td><td>113</td><td>223</td><td>3</td></tr>
-                                    <tr><th scope="row">W8</th><td>160</td><td>118</td><td>228</td><td>8</td></tr>
-                                    <tr><th scope="row">W9</th><td>180</td><td>135</td><td>245</td><td>25</td></tr>
-                                    <tr><th scope="row">W10</th><td>150</td><td>155</td><td>265</td><td>45</td></tr>
-                                    <tr><th scope="row">W11</th><td>120</td><td>153</td><td>263</td><td>43</td></tr>
-                                    <tr class="feed-row-anomaly"><th scope="row">W12</th><td>12514</td><td>2654</td><td>2764</td><td>2544</td></tr>
+                                    <tr><th scope="row">W1</th><td>285</td><td>285</td><td>285</td><td>285</td></tr>
+                                    <tr><th scope="row">W2</th><td>420</td><td>352</td><td>454</td><td>251</td></tr>
+                                    <tr><th scope="row">W3</th><td>190</td><td>298</td><td>440</td><td>157</td></tr>
+                                    <tr><th scope="row">W4</th><td>510</td><td>351</td><td>535</td><td>167</td></tr>
+                                    <tr><th scope="row">W5</th><td>340</td><td>365</td><td>541</td><td>189</td></tr>
+                                    <tr><th scope="row">W6</th><td>265</td><td>326</td><td>504</td><td>148</td></tr>
+                                    <tr><th scope="row">W7</th><td>455</td><td>392</td><td>536</td><td>249</td></tr>
+                                    <tr><th scope="row">W8</th><td>180</td><td>310</td><td>462</td><td>158</td></tr>
+                                    <tr><th scope="row">W9</th><td>390</td><td>322</td><td>483</td><td>162</td></tr>
+                                    <tr><th scope="row">W10</th><td>230</td><td>314</td><td>483</td><td>145</td></tr>
+                                    <tr><th scope="row">W11</th><td>300</td><td>275</td><td>393</td><td>157</td></tr>
+                                    <tr class="feed-row-anomaly"><th scope="row">W12</th><td>12514</td><td>3358</td><td>11288</td><td>0</td></tr>
                                 </tbody>
                             </table>
                         </div>
