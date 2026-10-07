@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboards — Proactive Wealthcare</title>
+    <meta name="description" content="Phone and computer product mockups: the Client overview, Observations feed, rolling-metrics chart, RiskAssessment card, immunized goal-funding view, and the human-in-the-loop syndication flow.">
+    <meta name="author" content="Jefferson Richards">
+    <meta name="theme-color" content="#08080d">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/wealthcare.css">
+</head>
+<body>
+
+<!-- ===== SHARED HEADER (byte-identical across all pages; nav.js sets aria-current at runtime) ===== -->
+<header class="site-header">
+    <a class="wordmark" href="index.html"><span class="wordmark-eyebrow">PROACTIVE WEALTHCARE</span><span class="wordmark-name">Wealthcare</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">&#9776;</button>
+    <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <a href="index.html">Vision</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="dashboards.html">Dashboards</a>
+        <a href="roadmap.html">Roadmap</a>
+    </nav>
+</header>
+<!-- ===== /SHARED HEADER ===== -->
+
+<!-- ===== SHARED COMPLIANCE BANNER (byte-identical across all pages) ===== -->
+<div class="compliance-banner" role="note">
+    <strong>Proof of concept — not investment advice.</strong> Wealthcare is an educational, proof-of-concept demonstration using deterministic, hypothetical modeling. A real deployment offering personalized financial guidance would require an SEC no-action letter, or would have to restrict access to accredited investors. <a href="index.html#disclaimer">Read the full disclaimer</a>.
+</div>
+<!-- ===== /SHARED COMPLIANCE BANNER ===== -->
+
+<main>
+
+    <section class="section" aria-labelledby="dash-heading">
+        <div class="section-inner">
+            <div class="hero-tag page-eyebrow">Dashboards</div>
+            <h1 class="page-title">What the product looks like</h1>
+            <p class="section-lead">A gallery of mockups on phone and computer frames. Every figure is static representative data — the two charts render from hard-coded, locked datasets with no live fetch, and each chart is paired with a data table so the numbers survive even without charts.</p>
+        </div>
+    </section>
+
+    <!-- §5.1 Client overview (desktop frame) -->
+    <section class="section" id="client-overview" aria-labelledby="overview-heading">
+        <div class="section-inner">
+            <h2 id="overview-heading" class="section-title">§5.1 — Client overview</h2>
+            <figure class="mockup">
+                <figcaption class="mockup-caption">Desktop · Client dashboard</figcaption>
+                <div class="device-frame device-desktop">
+                    <div class="device-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                    <div class="device-screen">
+                        <div class="persona-header">Client: Jim <span class="illustrative-badge">illustrative persona</span></div>
+                        <div class="tile-grid">
+                            <div class="tile">
+                                <div class="tile-label">Net worth</div>
+                                <div class="tile-value">$128,400 <span class="illustrative-badge">illustrative</span></div>
+                            </div>
+                            <div class="tile">
+                                <div class="tile-label">Active goals</div>
+                                <div class="tile-value">6</div>
+                            </div>
+                            <div class="tile tile-risk">
+                                <div class="tile-label">Risk flags</div>
+                                <div class="tile-value">1</div>
+                            </div>
+                            <div class="tile">
+                                <div class="tile-label">Next appointment</div>
+                                <div class="tile-value" style="font-size:1em;">Insurance broker — Tue 10:00 AM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </figure>
+        </div>
+    </section>
+
+    <!-- §5.2 Observations feed (phone frame) -->
+    <section class="section" id="observations-feed" aria-labelledby="feed-heading">
+        <div class="section-inner">
+            <h2 id="feed-heading" class="section-title">§5.2 — Observations feed</h2>
+            <p class="section-lead">Each time or money event is an <code>Observation</code> with a coded behavior, a human label, a <code>category</code> chip, a date, and a value. The $12,500 golf-cart purchase on 2026-09-28 (row 11) is the anomaly that breaches the deviation band in §5.3 and triggers the syndication flow in §5.6 — it is styled in risk red.</p>
+            <figure class="mockup">
+                <figcaption class="mockup-caption">Phone · Observations feed</figcaption>
+                <div class="device-frame device-phone">
+                    <div class="device-notch" aria-hidden="true"></div>
+                    <div class="device-screen">
+                        <ul class="feed" aria-label="Observations feed, 12 events">
+                            <li class="feed-row">
+                                <span class="feed-code">MONEY-TOBACCO</span>
+                                <span class="feed-value">$14</span>
+                                <span class="feed-label">Tobacco purchase</span>
+                                <span class="feed-meta"><span class="feed-chip">money</span>2026-07-06</span>
+                            </li>
+                            <li class="feed-row">
+                                <span class="feed-code">TIME-GOLF</span>
+                                <span class="feed-value">180 min</span>
+                                <span class="feed-label">Golf (calendar)</span>
+                                <span class="feed-meta"><span class="feed-chip">time</span>2026-07-07</span>
+                            </li>
+                            <li class="feed-row">
+                                <span class="feed-code">MONEY-TOBACCO</span>
+                                <span class="feed-value">$14</span>
+                                <span class="feed-label">Tobacco purchase</span>
+                                <span class="feed-meta"><span class="feed-chip">money</span>2026-07-20</span>
+                            </li>
+                            <li class="feed-row">
+                                <span class="feed-code">MONEY-METAL</span>
+                                <span class="feed-value">$320</span>
+                                <span class="feed-label">Silver purchase</span>
+                                <span class="feed-meta"><span class="feed-chip">money</span>2026-08-03</span>
+                            </li>
+                            <li class="feed-row">
+                                <span class="feed-code">MONEY-GAMBLE</span>
+                                <span class="feed-value">$75</span>
+                                <span class="feed-label">Online gambling</span>
+                                <span class="feed-meta"><span class="feed-chip">money</span>2026-08-17</span>
+                            </li>
+                            <li class="feed-row">
+                                <span class="feed-code">TIME-GOLF</span>
+                                <span class="feed-value">240 min</span>
+                                <span class="feed-label">Golf (calendar)</span>
+                                <span class="feed-meta"><span class="feed-chip">time</span>2026-08-22</span>
+                            </li>
+                            <li class="feed-row">
+                                <span class="feed-code">MONEY-TOBACCO</span>
+                                <span class="feed-value">$14</span>
+                                <span class="feed-label">Tobacco purchase</span>
+                                <span class="feed-meta"><span class="feed-chip">money</span>2026-08-31</span>
+                            </li>
+                            <li class="feed-row">
+                                <span class="feed-code">MONEY-DINING</span>
+                                <span class="feed-value">$110</span>
+                                <span class="feed-label">Dining out</span>
+                                <span class="feed-meta"><span class="feed-chip">money</span>2026-09-07</span>
+                            </li>
+                            <li class="feed-row">
+                                <span class="feed-code">MONEY-GAMBLE</span>
+                                <span class="feed-value">$90</span>
+                                <span class="feed-label">Online gambling</span>
+                                <span class="feed-meta"><span class="feed-chip">money</span>2026-09-14</span>
+                            </li>
+                            <li class="feed-row">
+                                <span class="feed-code">MONEY-METAL</span>
+                                <span class="feed-value">$300</span>
+                                <span class="feed-label">Silver purchase</span>
+                                <span class="feed-meta"><span class="feed-chip">money</span>2026-09-21</span>
+                            </li>
+                            <li class="feed-row feed-row-anomaly" id="obs-row-11">
+                                <span class="feed-code">MONEY-GOLFCART</span>
+                                <span class="feed-value">$12,500</span>
+                                <span class="feed-label">Golf-cart purchase</span>
+                                <span class="feed-meta"><span class="feed-chip">money</span>2026-09-28</span>
+                            </li>
+                            <li class="feed-row">
+                                <span class="feed-code">MONEY-TOBACCO</span>
+                                <span class="feed-value">$14</span>
+                                <span class="feed-label">Tobacco purchase</span>
+                                <span class="feed-meta"><span class="feed-chip">money</span>2026-09-28</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </figure>
+        </div>
+    </section>
+
+    <!-- §5.3 Rolling metrics (desktop frame, Chart.js) -->
+    <section class="section" id="rolling-metrics" aria-labelledby="rolling-heading">
+        <div class="section-inner">
+            <h2 id="rolling-heading" class="section-title">§5.3 — Rolling metrics</h2>
+            <p class="section-lead">Weekly money-spend (W1–W12, 2026-07-06 → 2026-09-28) with its trailing rolling average and a ±1σ deviation band. The first breach is W12 — the $12,500 golf-cart spike (Observation row 11) — marked in risk red.</p>
+            <figure class="mockup chart-figure">
+                <figcaption class="mockup-caption">Desktop · Rolling money-spend chart</figcaption>
+                <div class="device-frame device-desktop">
+                    <div class="device-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                    <div class="device-screen">
+                        <p id="charts-fallback-note" class="charts-fallback" role="status" hidden>Charts unavailable offline — see the table below.</p>
+                        <div class="chart-canvas-wrap">
+                            <canvas id="rolling-metrics-chart" aria-label="Line chart of weekly money spend W1 to W12 with rolling average and a plus-or-minus one sigma deviation band; the W12 point breaches the band. The data table below carries the same numbers." role="img"></canvas>
+                        </div>
+                        <div class="table-scroll">
+                            <table class="data-table">
+                                <caption>§5.3 rolling-metrics series (locked)</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Week</th>
+                                        <th scope="col">Spend ($)</th>
+                                        <th scope="col">Rolling avg ($)</th>
+                                        <th scope="col">Band upper ($)</th>
+                                        <th scope="col">Band lower ($)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><th scope="row">W1</th><td>90</td><td>90</td><td>200</td><td>0</td></tr>
+                                    <tr><th scope="row">W2</th><td>120</td><td>105</td><td>215</td><td>0</td></tr>
+                                    <tr><th scope="row">W3</th><td>85</td><td>98</td><td>208</td><td>0</td></tr>
+                                    <tr><th scope="row">W4</th><td>140</td><td>109</td><td>219</td><td>0</td></tr>
+                                    <tr><th scope="row">W5</th><td>110</td><td>114</td><td>224</td><td>4</td></tr>
+                                    <tr><th scope="row">W6</th><td>70</td><td>101</td><td>211</td><td>0</td></tr>
+                                    <tr><th scope="row">W7</th><td>130</td><td>113</td><td>223</td><td>3</td></tr>
+                                    <tr><th scope="row">W8</th><td>160</td><td>118</td><td>228</td><td>8</td></tr>
+                                    <tr><th scope="row">W9</th><td>180</td><td>135</td><td>245</td><td>25</td></tr>
+                                    <tr><th scope="row">W10</th><td>150</td><td>155</td><td>265</td><td>45</td></tr>
+                                    <tr><th scope="row">W11</th><td>120</td><td>153</td><td>263</td><td>43</td></tr>
+                                    <tr class="feed-row-anomaly"><th scope="row">W12</th><td>12514</td><td>2654</td><td>2764</td><td>2544</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </figure>
+        </div>
+    </section>
+
+    <!-- §5.4 RiskAssessment card -->
+    <section class="section" id="risk-card" aria-labelledby="riskcard-heading">
+        <div class="section-inner">
+            <h2 id="riskcard-heading" class="section-title">§5.4 — RiskAssessment card</h2>
+            <div class="risk-card">
+                <h3>Risk → consequence: tobacco behavior</h3>
+                <ul class="spec-list">
+                    <li>Behavior basis: the recurring <code>MONEY-TOBACCO</code> Observations from the §5.2 feed.</li>
+                    <li>Modeled lung-cancer probability band: <strong class="risk-figure">0.25%&ndash;0.4%</strong> <span class="micro-disclaimer">(illustrative modeling — not a medical or actuarial determination)</span>.</li>
+                    <li>Modeled financial consequence: premium impact labeled <strong>illustrative</strong>, surfaced to the Client and used as the trigger for the insurance-broker syndication flow (§5.6).</li>
+                </ul>
+                <p class="micro-disclaimer micro-disclaimer-block">This is illustrative modeling — not a medical or actuarial determination. The <strong class="risk-figure">0.25%&ndash;0.4%</strong> band is the narrative's own illustrative figure and does not describe any real individual.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- §5.5 Immunized goal-funding view (desktop frame, Chart.js) -->
+    <section class="section" id="goal-funding" aria-labelledby="funding-heading">
+        <div class="section-inner">
+            <h2 id="funding-heading" class="section-title">§5.5 — Immunized goal-funding view</h2>
+            <p class="section-lead">The account.ninja → immunized-baseline integration. The three LOW/MEDIUM/HIGH tiers use a 40/35/25 barbell split with return midpoints 4.5% / 7% / 11%, compared across a 10%-down vs 20%-down lump-sum scenario. Figures are copied to the cent from the deterministic account-ninja vesting-schedule CSVs.</p>
+            <figure class="mockup chart-figure">
+                <figcaption class="mockup-caption">Desktop · Goal-funding chart</figcaption>
+                <div class="device-frame device-desktop">
+                    <div class="device-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                    <div class="device-screen">
+                        <div class="chart-canvas-wrap">
+                            <canvas id="funding-chart" aria-label="Line chart of total balance growing to the $90,000 goal across 60 cycles for the Jefferson example, comparing the 10%-down and 20%-down scenarios. The data table below carries the same numbers." role="img"></canvas>
+                        </div>
+
+                        <div class="table-scroll">
+                            <table class="data-table">
+                                <caption>§5.5 Jefferson — goal $90,000, 60 cycles (per-cycle vesting by tier)</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Scenario</th>
+                                        <th scope="col">Lump sum</th>
+                                        <th scope="col" class="tier-low">LOW</th>
+                                        <th scope="col" class="tier-med">MEDIUM</th>
+                                        <th scope="col" class="tier-high">HIGH</th>
+                                        <th scope="col">Per-cycle total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">10% down</th>
+                                        <td>$9,000 <span class="tier-low">(3600)</span> <span class="tier-med">(3150)</span> <span class="tier-high">(2250)</span></td>
+                                        <td class="tier-low">$469.98</td>
+                                        <td class="tier-med">$378.85</td>
+                                        <td class="tier-high">$235.34</td>
+                                        <td>$1,084.16</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">20% down</th>
+                                        <td>$18,000 <span class="tier-low">(7200)</span> <span class="tier-med">(6300)</span> <span class="tier-high">(4500)</span></td>
+                                        <td class="tier-low">$402.96</td>
+                                        <td class="tier-med">$316.62</td>
+                                        <td class="tier-high">$186.59</td>
+                                        <td>$906.17</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="table-scroll">
+                            <table class="data-table">
+                                <caption>§5.5 Kenneth — goal $48,000, 12 cycles (per-cycle vesting by tier)</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Scenario</th>
+                                        <th scope="col">Lump sum</th>
+                                        <th scope="col" class="tier-low">LOW</th>
+                                        <th scope="col" class="tier-med">MEDIUM</th>
+                                        <th scope="col" class="tier-high">HIGH</th>
+                                        <th scope="col">Per-cycle total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">10% down</th>
+                                        <td>$4,800 <span class="tier-low">(1920)</span> <span class="tier-med">(1680)</span> <span class="tier-high">(1200)</span></td>
+                                        <td class="tier-low">$1,403.84</td>
+                                        <td class="tier-med">$1,210.96</td>
+                                        <td class="tier-high">$845.27</td>
+                                        <td>$3,460.07</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">20% down</th>
+                                        <td>$9,600 <span class="tier-low">(3840)</span> <span class="tier-med">(3360)</span> <span class="tier-high">(2400)</span></td>
+                                        <td class="tier-low">$1,239.97</td>
+                                        <td class="tier-med">$1,065.67</td>
+                                        <td class="tier-high">$739.30</td>
+                                        <td>$3,044.93</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p class="funding-note"><strong>Note on the narrative's 3% / 6% / 12%.</strong> The driving narrative casually mentions "the 3% investment, the 6% investment, the 12% investment accounts." Those offhand figures are <strong>superseded</strong> by the account-ninja pipeline's modeled tier midpoints <strong>LOW 4.5% / MEDIUM 7% / HIGH 11%</strong> (per the pipeline README) and its 40/35/25 barbell split. The deterministic CSV outputs are authoritative; use 4.5/7/11% everywhere.</p>
+                        <p class="funding-note">These figures come from the deterministic account-ninja report pipeline and are educational modeling — not projections of real returns.</p>
+                    </div>
+                </div>
+            </figure>
+        </div>
+    </section>
+
+    <!-- §5.6 Syndication / human-in-the-loop (phone frame) -->
+    <section class="section" id="syndication" aria-labelledby="synd-heading">
+        <div class="section-inner">
+            <h2 id="synd-heading" class="section-title">§5.6 — Syndication &amp; human-in-the-loop</h2>
+            <p class="section-lead">The breach in §5.3 and the golf-cart Observation in §5.2 fire a notification thread to Jim. Pre-approval data is syndicated from an insurer pipeline, and a human insurance-broker <code>Practitioner</code> is offered as bookable <code>Encounter</code> slots the Client approves.</p>
+            <figure class="mockup">
+                <figcaption class="mockup-caption">Phone · Syndication thread</figcaption>
+                <div class="device-frame device-phone">
+                    <div class="device-notch" aria-hidden="true"></div>
+                    <div class="device-screen">
+                        <div class="persona-header">To: Jim <span class="illustrative-badge">illustrative persona</span></div>
+                        <div class="thread">
+                            <div class="thread-msg">We noticed a large golf-cart expenditure. (See <a href="#obs-row-11">the $12,500 Observation</a> and the <a href="#rolling-metrics">W12 deviation breach</a>.)</div>
+                            <div class="thread-msg">We've pre-approved you with your insurer. <span class="badge-pipeline">insurer pipeline</span></div>
+                            <div class="thread-msg">
+                                Here are 3 insurance-broker appointment slots — add to your calendar.
+                                <ul class="slot-list">
+                                    <li><button type="button" class="slot">Insurance broker — Tue 10:00 AM</button></li>
+                                    <li><button type="button" class="slot">Insurance broker — Wed 2:30 PM</button></li>
+                                    <li><button type="button" class="slot">Insurance broker — Fri 9:00 AM</button></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="thread-caption">This is not purely behind the scenes: a human (the insurance-broker <code>Practitioner</code>) is in the loop, and the Client approves the action.</p>
+                    </div>
+                </div>
+            </figure>
+        </div>
+    </section>
+
+</main>
+
+<!-- ===== SHARED FOOTER (adapted from street.riskrunners.com; byte-identical across all pages) ===== -->
+<footer>
+    <div class="brand">WEALTHCARE</div>
+    <p>Proactive Wealthcare — Personal financial wellness on the HL7 FHIR model</p>
+    <p style="margin-top: 8px;">A Risk Runners Project</p>
+    <div class="footer-links">
+        <a href="https://github.com/jeffy893/riskrunners/wiki" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            Risk Runners Codebase
+        </a>
+        <a href="https://jeffersonrichards.com" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.6 0H2.4C1.07 0 0 1.07 0 2.4v11.2C0 14.93 1.07 16 2.4 16h11.2c1.33 0 2.4-1.07 2.4-2.4V2.4C16 1.07 14.93 0 13.6 0zM4.75 13.6H2.4V6h2.35v7.6zM3.58 5.03a1.36 1.36 0 110-2.72 1.36 1.36 0 010 2.72zM13.6 13.6h-2.35V9.92c0-.88-.02-2.01-1.23-2.01-1.23 0-1.42.96-1.42 1.95v3.74H6.25V6h2.26v1.04h.03c.31-.6 1.08-1.23 2.22-1.23 2.38 0 2.82 1.56 2.82 3.6v4.19z"/></svg>
+            Connect with the Founder
+        </a>
+        <a href="https://www.riskrunners.com" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm5.3 4.7h-2.2c-.2-1-.6-1.9-1.1-2.6a6 6 0 013.3 2.6zM8 1.3c.7.8 1.2 1.9 1.5 3.4h-3C6.8 3.2 7.3 2.1 8 1.3zM1.5 9.3a6.4 6.4 0 010-2.6h2.6a13 13 0 000 2.6H1.5zm1.2 1.4h2.2c.2 1 .6 1.9 1.1 2.6a6 6 0 01-3.3-2.6zM4.9 4.7H2.7a6 6 0 013.3-2.6c-.5.7-.9 1.6-1.1 2.6zm3.1 10c-.7-.8-1.2-1.9-1.5-3.4h3c-.3 1.5-.8 2.6-1.5 3.4zm1.8-4.7H6.2a11.5 11.5 0 010-4h3.6a11.5 11.5 0 010 4zm.2 3.3c.5-.7.9-1.6 1.1-2.6h2.2a6 6 0 01-3.3 2.6zm1.4-4h2.6a6.4 6.4 0 000-2.6h-2.6a13 13 0 010 2.6z"/></svg>
+            Risk Runners Central Links
+        </a>
+    </div>
+    <div class="footer-compliance">Proof of concept — not investment advice. <a href="index.html#disclaimer">Read the full disclaimer</a>.</div>
+    <p style="margin-top: 18px;">&copy; Jefferson Richards &lt;Jefferson@richards.plus&gt;</p>
+</footer>
+<!-- ===== /SHARED FOOTER ===== -->
+
+<script src="js/nav.js"></script>
+<script src="js/dashboards.js"></script>
+</body>
+</html>
