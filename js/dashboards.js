@@ -103,15 +103,19 @@
                 lumpTiers: { low: 3600, med: 3150, high: 2250 },
                 perCycle: 1084.16,       // LOW 469.98 / MED 378.85 / HIGH 235.34
                 perCycleTiers: { low: 469.98, med: 378.85, high: 235.34 },
-                // Illustrative total-balance curve to $90,000 at cycle 60.
-                balance: [9000, 10135.94, 20000, 32000, 46000, 62000, 90000]
+                // Less down up front -> needs the full horizon: hits $90,000 at cycle 60.
+                balance: [9000, 10135.94, 20000, 32000, 46000, 62000, 90000],
+                goalReachedCycle: 60
             },
             down20: {
                 lump: 18000,             // LOW 7200 / MED 6300 / HIGH 4500
                 lumpTiers: { low: 7200, med: 6300, high: 4500 },
                 perCycle: 906.17,        // LOW 402.96 / MED 316.62 / HIGH 186.59
                 perCycleTiers: { low: 402.96, med: 316.62, high: 186.59 },
-                balance: [18000, 19009.73, 29000, 41000, 55000, 71000, 90000]
+                // More down up front + compounding -> reaches $90,000 EARLY, by cycle 48,
+                // then flattens at the goal (no further vesting needed). ~12 cycles sooner.
+                balance: [18000, 19009.73, 32000, 50000, 72000, 90000, 90000],
+                goalReachedCycle: 48
             },
             // Shared x-axis checkpoints (cycle numbers) for the two curves.
             cyclePoints: [0, 1, 12, 24, 36, 48, 60]
@@ -319,17 +323,24 @@
         });
     }
 
-    /* §5.5 funding chart — total-balance growth to the goal, 10%- vs 20%-down,
-       with the three tier colors represented in the per-cycle legend copy. */
+    /* §5.5 funding chart — total-balance growth to the goal, 10%- vs 20%-down.
+       The headline: 20%-down reaches the goal EARLY (cycle 48) and flattens,
+       ~12 cycles ahead of 10%-down (cycle 60). A green marker flags the early
+       finish; the x-axis labels mark the two finish cycles. */
     function buildFundingChart(ctx) {
         var j = funding.jefferson;
+        // "Goal reached early" marker: the goal value plotted only at the cycle
+        // where the 20%-down curve first hits it (48), null everywhere else.
+        var earlyReach = j.cyclePoints.map(function (c) {
+            return c === j.down20.goalReachedCycle ? j.goal : null;
+        });
         return new Chart(ctx, {
             type: 'line',
             data: {
                 labels: j.cyclePoints,
                 datasets: [
                     {
-                        label: '10% down (lump $9,000)',
+                        label: '10% down — reaches goal at cycle 60',
                         data: j.down10.balance,
                         borderColor: SCENARIO_10,
                         backgroundColor: SCENARIO_10,
@@ -338,13 +349,23 @@
                         fill: false
                     },
                     {
-                        label: '20% down (lump $18,000)',
+                        label: '20% down — reaches goal ~12 cycles sooner (cycle 48)',
                         data: j.down20.balance,
                         borderColor: SCENARIO_20,
                         backgroundColor: SCENARIO_20,
                         borderWidth: 2,
                         pointRadius: 3,
                         fill: false
+                    },
+                    {
+                        label: 'Goal reached early (20% down, cycle 48)',
+                        data: earlyReach,
+                        borderColor: TIER_MED,
+                        backgroundColor: TIER_MED,
+                        pointRadius: 9,
+                        pointHoverRadius: 11,
+                        pointStyle: 'star',
+                        showLine: false
                     },
                     {
                         label: 'Goal $90,000',
@@ -358,7 +379,7 @@
                     }
                 ]
             },
-            options: baseOptions('Immunized goal funding to $90,000 \u2014 10%-down vs 20%-down (Jefferson, 60 cycles)', 'Goal funding: 10% vs 20% down')
+            options: baseOptions('Immunized goal funding to $90,000 \u2014 20%-down reaches the goal ~12 cycles sooner (Jefferson)', 'Goal funding: 20% down finishes sooner')
         });
     }
 

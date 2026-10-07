@@ -46,19 +46,13 @@
 </header>
 <!-- ===== /SHARED HEADER ===== -->
 
-<!-- ===== SHARED COMPLIANCE BANNER (byte-identical across all pages) ===== -->
-<div class="compliance-banner" role="note">
-    <strong>Proof of concept — not investment advice.</strong> Wealthcare is an educational, proof-of-concept demonstration using deterministic, hypothetical modeling. A real deployment offering personalized financial guidance would require an SEC no-action letter, or would have to restrict access to accredited investors. <a href="index.html#disclaimer">Read the full disclaimer</a>.
-</div>
-<!-- ===== /SHARED COMPLIANCE BANNER ===== -->
-
 <main>
 
     <section class="section" aria-labelledby="road-heading">
         <div class="section-inner">
             <div class="hero-tag page-eyebrow">Roadmap</div>
             <h1 class="page-title">Buy vs build</h1>
-            <p id="thesis" class="section-lead"><strong>The thesis:</strong> build on top of open-source HAPI FHIR first to minimize time-to-market. Then — once it is clear only the <a href="architecture.html#minimum-set">minimum sufficient resource subset</a> is actually used — build a <strong>lean replacement</strong> limited to that subset and migrate off HAPI FHIR onto it. Faster, cheaper, owned.</p>
+            <p id="thesis" class="section-lead"><strong>The thesis:</strong> "buy" open-source HAPI FHIR — adopt a mature, standards-complete FHIR server off the shelf instead of building a data platform from scratch — so the product reaches <strong>paying clients in weeks, not quarters</strong>. The whole point of buying is speed: get a working product into real hands fast, start the <strong>feedback loop</strong> early, and let actual client usage tell you what matters before you spend a dollar building infrastructure. Then — once that feedback shows only the <a href="architecture.html#minimum-set">minimum sufficient resource subset</a> is actually used — build a <strong>lean replacement</strong> limited to that subset and migrate off HAPI FHIR onto it. Faster, cheaper, owned.</p>
         </div>
     </section>
 
@@ -74,8 +68,8 @@
                         <h3 class="phase-title">Repurpose &amp; prove</h3>
                         <p><strong>Goal:</strong> prove the model with no new infrastructure.</p>
                         <p><strong>What gets built:</strong> stand up HAPI FHIR; relabel Patient → Client, Observation → behavior/transaction, and the rest; load representative Observations; build the dashboards. This proof-of-concept site is the artifact of Phase 0's thinking.</p>
-                        <p><strong>Buy vs build:</strong> buy (adopt open-source HAPI FHIR as-is).</p>
-                        <p><strong>Unlocks:</strong> a working resource model to ingest real data against.</p>
+                        <p><strong>Buy vs build:</strong> buy (adopt open-source HAPI FHIR as-is). Buying here is the whole speed play — a production-grade FHIR server exists today, so there is no reason to spend months rebuilding one before you can show a client anything.</p>
+                        <p><strong>Unlocks:</strong> a working resource model to ingest real data against — and, critically, something you can put in front of paying clients quickly to start collecting feedback.</p>
                     </div>
                 </li>
                 <li class="phase" id="phase-1">
@@ -122,6 +116,21 @@
         </div>
     </section>
 
+    <!-- §7.2b ISO 31010 risk modeling of client event horizons -->
+    <section class="section" id="iso31010" aria-labelledby="iso-heading">
+        <div class="section-inner">
+            <h2 id="iso-heading" class="section-title">Modeling event horizons with ISO 31010</h2>
+            <p class="section-lead">Wealthcare lives under the <a href="https://www.riskrunners.com" target="_blank" rel="noopener noreferrer">Risk Runners</a> umbrella, so risk analysis is not an afterthought — it is the engine. Once a Client has a goal baseline and a stream of behavior Observations, we apply the risk-assessment techniques catalogued in <strong>ISO 31010</strong> (the risk-assessment companion to ISO 31000) to model the Client's <strong>event horizons</strong> — the probable timing and financial impact of the life events that could move them off, or onto, their goal.</p>
+            <ul class="spec-list">
+                <li><strong>Monte Carlo simulation</strong> is the workhorse. Rather than a single deterministic baseline, we run thousands of trials over the goal horizon, drawing from distributions for behavior drift (e.g. the Leisure/Golf spike), market returns on the LOW/MED/HIGH tiers, income shocks, and modeled health/insurance events. The output is a <strong>probability distribution of outcomes</strong>: the odds of hitting the goal by each cycle, and a fan of best-/worst-case trajectories around the immunized baseline.</li>
+                <li><strong>Markov analysis</strong> models the Client's movement between behavioral states (on-track → drifting → recovered) and the transition probabilities between them over time.</li>
+                <li><strong>Decision-tree &amp; cost/benefit analysis (CBA)</strong> value the branch points a RiskAssessment surfaces — e.g. buy the insurance now vs later — in expected-value terms.</li>
+                <li><strong>Bow-tie analysis</strong> maps a given risk (a large anomalous expenditure) to its preventive controls on one side and its financial consequences and mitigations on the other.</li>
+            </ul>
+            <p class="design-note" role="note"><strong>Why it belongs here:</strong> the RiskAssessment resource is the end of the data pipeline; ISO 31010 methods are how that resource is <em>computed</em>. Monte Carlo in particular turns the single-line funding baseline into a horizon of probabilities — the difference between "here's your plan" and "here's how likely your plan is, and when it's most at risk." These techniques are illustrative here and not implemented in this proof of concept.</p>
+        </div>
+    </section>
+
     <!-- §7.3 Data-source integrations -->
     <section class="section" id="integrations" aria-labelledby="int-heading">
         <div class="section-inner">
@@ -149,6 +158,16 @@
             </ol>
         </div>
     </section>
+
+    <!-- Bottom cross-page nav -->
+    <nav class="page-nav" aria-label="Continue">
+        <div class="page-nav-eyebrow">Start again</div>
+        <a class="page-nav-cta" href="index.html">Back to the Wealthcare vision <span class="arrow" aria-hidden="true">→</span></a>
+        <div class="page-nav-secondary">
+            <a href="architecture.html">← The architecture</a>
+            <a href="dashboards.html">Dashboard mockups →</a>
+        </div>
+    </nav>
 
 </main>
 

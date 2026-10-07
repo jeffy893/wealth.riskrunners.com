@@ -953,8 +953,38 @@ code {
     list-style: none;
     margin: 0;
     padding: 0;
-    max-height: 520px;
+    /* Cap height so only ~5 events show and the list clearly scrolls. */
+    max-height: 300px;
     overflow-y: auto;
+    /* Always show a scrollbar track so the scroll affordance is obvious. */
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+}
+
+/* Visible scrollbar on WebKit so users know the feed scrolls. */
+.feed::-webkit-scrollbar { width: 8px; }
+.feed::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+.feed::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+
+/* "scrollable" tag in the figcaption */
+.scroll-affordance {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.82em;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin-left: 8px;
+}
+
+/* Hint beneath the feed inside the phone screen */
+.feed-scroll-hint {
+    text-align: center;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.72em;
+    letter-spacing: 1px;
+    color: var(--muted);
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+    margin-top: 4px;
 }
 
 .feed-row {
@@ -1153,4 +1183,73 @@ code {
     .table-scroll { margin: 14px 0; }
     .table-scroll .data-table { min-width: 480px; font-size: 0.84em; }
     .data-table th, .data-table td { padding: 8px 10px; }
+}
+
+/* ============================================================================
+   PAGE NAV — bottom-of-page cross-links (every non-index page). A prominent
+   primary CTA button plus secondary text links, so a reader always has an
+   obvious next step (e.g. architecture -> dashboards examples).
+   ========================================================================== */
+.page-nav {
+    max-width: 1000px;
+    margin: 10px auto 0;
+    padding: 48px 20px 8px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+
+.page-nav-eyebrow {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.8em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+}
+
+.page-nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: #06201c;
+    font-weight: 700;
+    font-size: 1.05em;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 10px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.page-nav-cta:hover {
+    background: #46d4ba;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(47, 184, 160, 0.25);
+}
+
+.page-nav-cta:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+.page-nav-cta .arrow { font-size: 1.2em; line-height: 1; }
+
+.page-nav-secondary {
+    display: flex;
+    justify-content: center;
+    gap: 10px 24px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.page-nav-secondary a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.92em;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.page-nav-secondary a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+@media (max-width: 600px) {
+    .page-nav { padding: 36px 16px 4px; }
+    .page-nav-cta { font-size: 0.98em; padding: 12px 20px; }
 }

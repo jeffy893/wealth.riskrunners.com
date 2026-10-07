@@ -9,11 +9,12 @@ server — and repurpose it as the backbone of a **personal financial-wellness s
 > proof-of-concept demonstration using deterministic, hypothetical modeling. It is **not
 > investment advice** and recommends **no securities, allocations, or changes to any
 > financial plan**. Figures shown are illustrative representative data, not projections of
-> real returns. A real deployment that offered personalized financial guidance would
-> require an **SEC no-action letter**, or would have to **restrict access to accredited
-> investors** — a significant regulatory hurdle that this proof of concept does not clear.
-> Risk, health, and financial figures are illustrative and are not medical, actuarial, or
-> financial determinations.
+> real returns. There is a fine line when securities are involved: in a real deployment
+> the platform would surface information and modeling, but any **personalized investment
+> advice could only be delivered by accredited, duly registered financial advisors** — the
+> platform informs, licensed humans advise. Standing that up would likely also require an
+> **SEC no-action letter** clarifying the platform's role. Risk, health, and financial
+> figures are illustrative and are not medical, actuarial, or financial determinations.
 
 ---
 
