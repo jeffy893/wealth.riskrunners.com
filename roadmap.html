@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap — Proactive Wealthcare</title>
+    <meta name="description" content="Buy vs build on HAPI FHIR: a phased plan from repurpose to lean rebuild, the data-source integrations, AI/LLM extraction, and the governance-team workflow.">
+    <meta name="author" content="Jefferson Richards">
+    <meta name="theme-color" content="#08080d">
+    <link rel="stylesheet" href="css/wealthcare.css">
+</head>
+<body>
+
+<!-- ===== SHARED HEADER (byte-identical across all pages; nav.js sets aria-current at runtime) ===== -->
+<header class="site-header">
+    <a class="wordmark" href="index.html"><span class="wordmark-eyebrow">PROACTIVE WEALTHCARE</span><span class="wordmark-name">Wealthcare</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">&#9776;</button>
+    <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <a href="index.html">Vision</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="dashboards.html">Dashboards</a>
+        <a href="roadmap.html">Roadmap</a>
+    </nav>
+</header>
+<!-- ===== /SHARED HEADER ===== -->
+
+<!-- ===== SHARED COMPLIANCE BANNER (byte-identical across all pages) ===== -->
+<div class="compliance-banner" role="note">
+    <strong>Proof of concept — not investment advice.</strong> Wealthcare is an educational, proof-of-concept demonstration using deterministic, hypothetical modeling. A real deployment offering personalized financial guidance would require an SEC no-action letter, or would have to restrict access to accredited investors. <a href="index.html#disclaimer">Read the full disclaimer</a>.
+</div>
+<!-- ===== /SHARED COMPLIANCE BANNER ===== -->
+
+<main>
+
+    <section class="section" aria-labelledby="road-heading">
+        <div class="section-inner">
+            <div class="hero-tag page-eyebrow">Roadmap</div>
+            <h1 class="page-title">Buy vs build</h1>
+            <p id="thesis" class="section-lead"><strong>The thesis:</strong> build on top of open-source HAPI FHIR first to minimize time-to-market. Then — once it is clear only the <a href="architecture.html#minimum-set">minimum sufficient resource subset</a> is actually used — build a <strong>lean replacement</strong> limited to that subset and migrate off HAPI FHIR onto it. Faster, cheaper, owned.</p>
+        </div>
+    </section>
+
+    <!-- §7.2 Phases -->
+    <section class="section" id="phases" aria-labelledby="phases-heading">
+        <div class="section-inner">
+            <h2 id="phases-heading" class="section-title">The phased plan</h2>
+
+            <ol class="phase-list">
+                <li class="phase" id="phase-0">
+                    <div class="phase-marker">Phase 0</div>
+                    <div class="phase-body">
+                        <h3 class="phase-title">Repurpose &amp; prove</h3>
+                        <p><strong>Goal:</strong> prove the model with no new infrastructure.</p>
+                        <p><strong>What gets built:</strong> stand up HAPI FHIR; relabel Patient → Client, Observation → behavior/transaction, and the rest; load representative Observations; build the dashboards. This proof-of-concept site is the artifact of Phase 0's thinking.</p>
+                        <p><strong>Buy vs build:</strong> buy (adopt open-source HAPI FHIR as-is).</p>
+                        <p><strong>Unlocks:</strong> a working resource model to ingest real data against.</p>
+                    </div>
+                </li>
+                <li class="phase" id="phase-1">
+                    <div class="phase-marker">Phase 1</div>
+                    <div class="phase-body">
+                        <h3 class="phase-title">Ingest</h3>
+                        <p><strong>Goal:</strong> get real time and money signals flowing in.</p>
+                        <p><strong>What gets built:</strong> wire the two data sources — <strong>Google Calendar</strong> (time) and <strong>bank/transactions via a Stripe-style partner</strong> (money). <strong>AI/LLM agents</strong> do the NLP to extract structured Observations from free-text calendar entries and transaction descriptions, mapping them to codes (MCC plus the custom CodeSystem).</p>
+                        <p><strong>Buy vs build:</strong> buy the feeds and LLM models; build the extraction and coding layer.</p>
+                        <p><strong>Unlocks:</strong> a live Observation stream for rolling metrics.</p>
+                    </div>
+                </li>
+                <li class="phase" id="phase-2">
+                    <div class="phase-marker">Phase 2</div>
+                    <div class="phase-body">
+                        <h3 class="phase-title">Objective &amp; baseline</h3>
+                        <p><strong>Goal:</strong> anchor the signals to a goal so they mean something.</p>
+                        <p><strong>What gets built:</strong> integrate account.ninja objective-setting and the immunized-baseline report pipeline; attach goals to the Client; render the funding view.</p>
+                        <p><strong>Buy vs build:</strong> reuse account.ninja and its pipeline (build the integration).</p>
+                        <p><strong>Unlocks:</strong> an immunized goal-funding baseline the dashboard can show.</p>
+                    </div>
+                </li>
+                <li class="phase" id="phase-3">
+                    <div class="phase-marker">Phase 3</div>
+                    <div class="phase-body">
+                        <h3 class="phase-title">Risk &amp; syndication</h3>
+                        <p><strong>Goal:</strong> turn risk into action with a human in the loop.</p>
+                        <p><strong>What gets built:</strong> add RiskAssessment analytics and the insurer/broker syndication plus human-in-the-loop engagement — pre-approvals syndicated from a partner pipeline and bookable broker Encounter slots.</p>
+                        <p><strong>Buy vs build:</strong> buy partner pipelines (insurer APIs); build the syndication and engagement flow.</p>
+                        <p><strong>Unlocks:</strong> the full behavior → consequence → human loop.</p>
+                    </div>
+                </li>
+                <li class="phase" id="phase-4">
+                    <div class="phase-marker">Phase 4</div>
+                    <div class="phase-body">
+                        <h3 class="phase-title">Lean rebuild &amp; migrate</h3>
+                        <p><strong>Goal:</strong> own the stack and shed what is not used.</p>
+                        <p><strong>What gets built:</strong> replace HAPI FHIR with a purpose-built store covering only the <a href="architecture.html#minimum-set">minimum sufficient resource set</a>; migrate the data; decommission the HAPI dependency.</p>
+                        <p><strong>Buy vs build:</strong> build (the lean replacement) and retire the bought dependency.</p>
+                        <p><strong>Unlocks:</strong> a faster, cheaper, fully-owned platform.</p>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- §7.3 Data-source integrations -->
+    <section class="section" id="integrations" aria-labelledby="int-heading">
+        <div class="section-inner">
+            <h2 id="int-heading" class="section-title">Data-source integrations</h2>
+            <ul class="spec-list">
+                <li><strong>Time → Google Calendar:</strong> event titles and descriptions → LLM extraction → time Observations (<code>category=time</code>, <code>valueQuantity</code> in minutes).</li>
+                <li><strong>Money → Stripe-style bank/transaction partner:</strong> transaction descriptions plus MCC → LLM classification → money Observations (<code>category=money</code>, <code>valueQuantity</code> in dollars).</li>
+            </ul>
+            <p class="design-note" role="note"><strong>Design note (not implemented):</strong> the system handles sensitive calendar and financial data. A real deployment needs explicit consent and secure handling of that data. This proof of concept flags privacy and consent as a first-class concern but does not implement it.</p>
+        </div>
+    </section>
+
+    <!-- §7.4 Governance-team workflow -->
+    <section class="section" id="governance-workflow" aria-labelledby="gw-heading">
+        <div class="section-inner">
+            <h2 id="gw-heading" class="section-title">Governance-team workflow</h2>
+            <p class="section-lead">Approving a new mapping or a new partner app that wants to write to the pipeline follows six steps. This ties back to the <a href="architecture.html#governance">governance and terminology</a> resources.</p>
+            <ol class="workflow-list">
+                <li>Propose codes.</li>
+                <li>Governance reviews them against the existing <code>CodeSystem</code> and <code>ValueSet</code>.</li>
+                <li>Define or extend the <code>StructureDefinition</code> profile.</li>
+                <li>Validate conformance in a staging HAPI instance.</li>
+                <li>Approve and publish the ValueSet and profile.</li>
+                <li>Grant the app write scope.</li>
+            </ol>
+        </div>
+    </section>
+
+</main>
+
+<!-- ===== SHARED FOOTER (adapted from street.riskrunners.com; byte-identical across all pages) ===== -->
+<footer>
+    <div class="brand">WEALTHCARE</div>
+    <p>Proactive Wealthcare — Personal financial wellness on the HL7 FHIR model</p>
+    <p style="margin-top: 8px;">A Risk Runners Project</p>
+    <div class="footer-links">
+        <a href="https://github.com/jeffy893/riskrunners/wiki" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            Risk Runners Codebase
+        </a>
+        <a href="https://jeffersonrichards.com" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.6 0H2.4C1.07 0 0 1.07 0 2.4v11.2C0 14.93 1.07 16 2.4 16h11.2c1.33 0 2.4-1.07 2.4-2.4V2.4C16 1.07 14.93 0 13.6 0zM4.75 13.6H2.4V6h2.35v7.6zM3.58 5.03a1.36 1.36 0 110-2.72 1.36 1.36 0 010 2.72zM13.6 13.6h-2.35V9.92c0-.88-.02-2.01-1.23-2.01-1.23 0-1.42.96-1.42 1.95v3.74H6.25V6h2.26v1.04h.03c.31-.6 1.08-1.23 2.22-1.23 2.38 0 2.82 1.56 2.82 3.6v4.19z"/></svg>
+            Connect with the Founder
+        </a>
+        <a href="https://www.riskrunners.com" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm5.3 4.7h-2.2c-.2-1-.6-1.9-1.1-2.6a6 6 0 013.3 2.6zM8 1.3c.7.8 1.2 1.9 1.5 3.4h-3C6.8 3.2 7.3 2.1 8 1.3zM1.5 9.3a6.4 6.4 0 010-2.6h2.6a13 13 0 000 2.6H1.5zm1.2 1.4h2.2c.2 1 .6 1.9 1.1 2.6a6 6 0 01-3.3-2.6zM4.9 4.7H2.7a6 6 0 013.3-2.6c-.5.7-.9 1.6-1.1 2.6zm3.1 10c-.7-.8-1.2-1.9-1.5-3.4h3c-.3 1.5-.8 2.6-1.5 3.4zm1.8-4.7H6.2a11.5 11.5 0 010-4h3.6a11.5 11.5 0 010 4zm.2 3.3c.5-.7.9-1.6 1.1-2.6h2.2a6 6 0 01-3.3 2.6zm1.4-4h2.6a6.4 6.4 0 000-2.6h-2.6a13 13 0 010 2.6z"/></svg>
+            Risk Runners Central Links
+        </a>
+    </div>
+    <div class="footer-compliance">Proof of concept — not investment advice. <a href="index.html#disclaimer">Read the full disclaimer</a>.</div>
+    <p style="margin-top: 18px;">&copy; Jefferson Richards &lt;Jefferson@richards.plus&gt;</p>
+</footer>
+<!-- ===== /SHARED FOOTER ===== -->
+
+<script src="js/nav.js"></script>
+</body>
+</html>

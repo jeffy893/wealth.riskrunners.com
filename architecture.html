@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture — Proactive Wealthcare</title>
+    <meta name="description" content="The FHIR lineage, front-end to back-end resource mapping, the Observation and rolling-metrics model, a RiskAssessment worked example, governance, and the minimum sufficient resource set.">
+    <meta name="author" content="Jefferson Richards">
+    <meta name="theme-color" content="#08080d">
+    <link rel="stylesheet" href="css/wealthcare.css">
+</head>
+<body>
+
+<!-- ===== SHARED HEADER (byte-identical across all pages; nav.js sets aria-current at runtime) ===== -->
+<header class="site-header">
+    <a class="wordmark" href="index.html"><span class="wordmark-eyebrow">PROACTIVE WEALTHCARE</span><span class="wordmark-name">Wealthcare</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">&#9776;</button>
+    <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <a href="index.html">Vision</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="dashboards.html">Dashboards</a>
+        <a href="roadmap.html">Roadmap</a>
+    </nav>
+</header>
+<!-- ===== /SHARED HEADER ===== -->
+
+<!-- ===== SHARED COMPLIANCE BANNER (byte-identical across all pages) ===== -->
+<div class="compliance-banner" role="note">
+    <strong>Proof of concept — not investment advice.</strong> Wealthcare is an educational, proof-of-concept demonstration using deterministic, hypothetical modeling. A real deployment offering personalized financial guidance would require an SEC no-action letter, or would have to restrict access to accredited investors. <a href="index.html#disclaimer">Read the full disclaimer</a>.
+</div>
+<!-- ===== /SHARED COMPLIANCE BANNER ===== -->
+
+<main>
+
+    <section class="section" aria-labelledby="arch-heading">
+        <div class="section-inner">
+            <div class="hero-tag page-eyebrow">Architecture</div>
+            <h1 class="page-title">Repurposing the healthcare stack</h1>
+            <p class="section-lead">Wealthcare proposes to run personal financial wellness on the same resource-based interoperability model that healthcare uses — the HL7 FHIR standard and the open-source HAPI FHIR server. The back end speaks real FHIR; the front end relabels those resources for the wealth domain.</p>
+        </div>
+    </section>
+
+    <!-- §4.1 Historical lineage -->
+    <section class="section" id="lineage" aria-labelledby="lineage-heading">
+        <div class="section-inner">
+            <h2 id="lineage-heading" class="section-title">A short lineage</h2>
+            <p class="section-lead">Four milestones that lead to the model Wealthcare repurposes.</p>
+            <ol class="timeline">
+                <li>
+                    <span class="timeline-era">Reference model</span>
+                    <span class="timeline-title">ISO 13606</span>
+                    <span class="timeline-desc">An EHR reference-model standard for communicating electronic health records. It frames every resource needed to fill out a full profile. Wealthcare treats it as the conceptual reference model for what a complete record of a person should hold.</span>
+                </li>
+                <li>
+                    <span class="timeline-era">1960s–70s</span>
+                    <span class="timeline-title">Larry Weed — POMR</span>
+                    <span class="timeline-desc">The Problem-Oriented Medical Record organized health data around a patient's problems rather than around providers. It is the intellectual ancestor of structuring a person's record around problems and goals — which is exactly how Wealthcare anchors signals to an objective.</span>
+                </li>
+                <li>
+                    <span class="timeline-era">Modern standard</span>
+                    <span class="timeline-title">HL7 FHIR</span>
+                    <span class="timeline-desc">A resource-based interoperability standard: discrete resources, references between them, coded data, and search on codes and combination-codes. This is the data model Wealthcare adopts wholesale for time and money.</span>
+                </li>
+                <li>
+                    <span class="timeline-era">Open-source server</span>
+                    <span class="timeline-title">HAPI FHIR</span>
+                    <span class="timeline-desc">The open-source Java reference server implementing FHIR. It stores resources, exposes a search API over codes and parameters, and explodes JSON resources into relational tables. This is the concrete thing Wealthcare proposes to repurpose first.</span>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- §4.2 Front-end ↔ back-end mapping -->
+    <section class="section" id="mapping" aria-labelledby="mapping-heading">
+        <div class="section-inner">
+            <h2 id="mapping-heading" class="section-title">Front end ↔ back end mapping</h2>
+            <p class="section-lead">The back end uses real FHIR resource names; the front end relabels them for the wealth domain. The person is always the <strong>Client</strong> in the UI (it maps to FHIR <code>Patient</code>); we never say "patient" in the product.</p>
+
+            <div class="table-scroll">
+            <table class="data-table">
+                <caption>FHIR resources and their Wealthcare front-end terms</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">FHIR resource (back end)</th>
+                        <th scope="col">Wealthcare term (front end)</th>
+                        <th scope="col">Mapping / notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row"><code>Patient</code></th>
+                        <td><strong>Client</strong></td>
+                        <td>The individual whose time and money are tracked. One consistent term: "Client". Subject of every Observation and RiskAssessment.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><code>Practitioner</code></th>
+                        <td><strong>Specialist relationship</strong></td>
+                        <td>Financial advisor, lawyer/attorney, accountant, insurance broker. Like medical specialties, but financial. The human-in-the-loop.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><code>Encounter</code></th>
+                        <td><strong>Meeting / appointment</strong></td>
+                        <td>A scheduled interaction (e.g., the insurance-broker slots offered in the syndication flow). References Client and Practitioner.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><code>Observation</code></th>
+                        <td><strong>Behavior / transaction event</strong></td>
+                        <td>Each time-or-money event: "bought cigarettes", "bought silver", "3 hours of golf on the calendar". Carries a <code>code</code>, <code>subject</code> → Client, <code>category</code> (time vs money), <code>effectiveDateTime</code>, <code>valueQuantity</code>, and <code>component[]</code> for rolling rollups.</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><code>RiskAssessment</code></th>
+                        <td><strong>Risk → consequence</strong></td>
+                        <td>End of the pipeline. Takes behavior-derived risk and expresses a financial or health consequence. See the worked example below. Emphasized because this is a riskrunners.com property.</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <figure class="two-lane" role="img" aria-label="Two-lane mapping: FHIR back-end resources Patient, Practitioner, Encounter, Observation, and RiskAssessment on the left connect to Wealthcare front-end terms Client, Specialist relationship, Meeting/appointment, Behavior/transaction event, and Risk-to-consequence on the right. The table above is the accessible equivalent.">
+                <div class="lane">
+                    <div class="lane-label">FHIR back end (HAPI FHIR)</div>
+                    <div class="chip">Patient</div>
+                    <div class="chip">Practitioner</div>
+                    <div class="chip">Encounter</div>
+                    <div class="chip">Observation</div>
+                    <div class="chip chip-risk">RiskAssessment</div>
+                </div>
+                <div class="connector-column" aria-hidden="true">
+                    <span class="connector">→</span>
+                    <span class="connector">→</span>
+                    <span class="connector">→</span>
+                    <span class="connector">→</span>
+                    <span class="connector">→</span>
+                </div>
+                <div class="lane">
+                    <div class="lane-label">Wealthcare front end</div>
+                    <div class="chip">Client</div>
+                    <div class="chip">Specialist relationship</div>
+                    <div class="chip">Meeting / appointment</div>
+                    <div class="chip">Behavior / transaction event</div>
+                    <div class="chip chip-risk">Risk → consequence</div>
+                </div>
+            </figure>
+        </div>
+    </section>
+
+    <!-- §4.3 Observation model + rolling metrics -->
+    <section class="section" id="observation-model" aria-labelledby="obs-heading">
+        <div class="section-inner">
+            <h2 id="obs-heading" class="section-title">The Observation model and rolling metrics</h2>
+            <p class="section-lead">Every time or money event is an <code>Observation</code>. Its shape is small and fixed:</p>
+            <ul class="spec-list">
+                <li><code>code</code> — a coded behavior (see the governance section on coding systems).</li>
+                <li><code>subject</code> — a reference to the Client (FHIR <code>Patient</code>).</li>
+                <li><code>category</code> — the top-level axis: <strong>time</strong> vs <strong>money</strong>, extensible to sub-categories like "discretionary" or "health-adjacent".</li>
+                <li><code>effectiveDateTime</code> — when it happened, tying money events to the transaction feed and time events to the calendar feed.</li>
+                <li><code>valueQuantity</code> — the magnitude: dollars for money, minutes or hours for time.</li>
+                <li><code>component[]</code> — used for rolling summaries.</li>
+            </ul>
+            <p class="section-lead">The system stresses two derived signals: a <strong>rolling average</strong> and a <strong>rolling deviation from that average</strong>. These are <em>derived</em> Observations — a summary Observation whose <code>component[]</code> carry the rolling average and rolling standard deviation over a trailing window (for example 30 or 90 days), computed over the stream of raw Observations. This is what powers the "we noticed a large expenditure" trigger in the syndication flow.</p>
+        </div>
+    </section>
+
+    <!-- §4.4 RiskAssessment worked example -->
+    <section class="section" id="riskassessment" aria-labelledby="risk-heading">
+        <div class="section-inner">
+            <h2 id="risk-heading" class="section-title">RiskAssessment: behavior → financial consequence</h2>
+            <p class="section-lead">A concrete, clearly hypothetical example (the Client "Jim"):</p>
+            <ul class="spec-list">
+                <li>Behavior Observations accumulate: coded tobacco-purchase events for Jim.</li>
+                <li>A <code>RiskAssessment</code> references those Observations as its <code>basis</code> and expresses a <code>prediction</code> with a modeled probability band of <strong class="risk-figure">0.25%&ndash;0.4%</strong> modeled lung-cancer likelihood <span class="micro-disclaimer">(illustrative modeling — not a medical or actuarial determination)</span>. Treat this as a rule-of-thumb figure, not a clinical claim.</li>
+                <li>That health risk flows to a <strong>financial consequence</strong>: a modeled treatment cost and insurance-premium impact, surfaced as the RiskAssessment card on the dashboard and as the trigger for the insurance-broker syndication flow.</li>
+            </ul>
+            <p class="micro-disclaimer micro-disclaimer-block">This is illustrative modeling — not a medical or actuarial determination. The <strong class="risk-figure">0.25%&ndash;0.4%</strong> band is the narrative's own illustrative figure and does not describe any real individual.</p>
+        </div>
+    </section>
+
+    <!-- Syndication model (cross-page concept, §6) -->
+    <section class="section" id="syndication" aria-labelledby="synd-heading">
+        <div class="section-inner">
+            <h2 id="synd-heading" class="section-title">Syndication and the human in the loop</h2>
+            <p class="section-lead">Observations plus rolling metrics detect a signal; a RiskAssessment or a threshold fires; Wealthcare <strong>syndicates</strong> the relevant slice of data to a partner pipeline (for example an insurer) over APIs; the partner returns an offer (pre-approval, premium); and Wealthcare surfaces it to the Client with a human <code>Practitioner</code> (a broker) and bookable <code>Encounter</code> slots that drop onto the calendar. It cannot all be behind the scenes — human engagement is a first-class requirement, not a footnote. The dashboards mock this exact flow.</p>
+        </div>
+    </section>
+
+    <!-- §4.5 Governance / terminology resources -->
+    <section class="section" id="governance" aria-labelledby="gov-heading">
+        <div class="section-inner">
+            <h2 id="gov-heading" class="section-title">Governance and terminology</h2>
+            <p class="section-lead">The terminology and conformance trio is how a governance team controls what may be written into the pipeline — not just data plumbing.</p>
+            <ul class="spec-list">
+                <li><code>CodeSystem</code> — defines coded behaviors. Do financial coding standards already exist? For money, <strong>yes</strong>: <strong>MCC (Merchant Category Codes, ISO 18245)</strong> classify merchants on card transactions, and bank feeds often carry them, so MCC is a reasonable seed vocabulary for money Observations. For time and behavior there is <strong>no</strong> universal standard, so Wealthcare defines a <strong>custom CodeSystem</strong> (also for finer financial intent than MCC captures).</li>
+                <li><code>ValueSet</code> — the approved subset of codes usable in a given Observation <code>category</code> (for example the ValueSet of money-behavior codes drawn from MCC plus custom codes).</li>
+                <li><code>StructureDefinition</code> (profiles) — constrains what a valid Wealthcare Observation or RiskAssessment must contain. This is the contract a new partner app must conform to.</li>
+            </ul>
+            <p class="section-lead">A <strong>governance team</strong> approves new CodeSystem entries, ValueSet membership, and profiles before any new app or data source may write to the pipeline. The step-by-step workflow is detailed on the <a href="roadmap.html#governance-workflow">roadmap</a>.</p>
+        </div>
+    </section>
+
+    <!-- §4.6 Minimum sufficient resource set -->
+    <section class="section" id="minimum-set" aria-labelledby="min-heading">
+        <div class="section-inner">
+            <h2 id="min-heading" class="section-title">The minimum sufficient resource set</h2>
+            <p class="section-lead">The smallest set of resources that makes the system work, with one line of justification each:</p>
+            <ul class="spec-list">
+                <li><code>Patient</code> → the Client; everything references them. Without it there is no subject.</li>
+                <li><code>Observation</code> → the atomic time and money event and the rolling-metric summaries; the raw signal of the whole system.</li>
+                <li><code>RiskAssessment</code> → turns accumulated behavior into a modeled financial or health consequence; the analytic payoff and the riskrunners.com anchor.</li>
+                <li><code>Practitioner</code> → the human specialists (advisor, attorney, accountant, broker) required for the human-in-the-loop engagement model.</li>
+                <li><code>Encounter</code> → scheduled meetings and appointments that connect Client and Practitioner (the broker slots).</li>
+                <li><code>CodeSystem</code>, <code>ValueSet</code>, <code>StructureDefinition</code> → make the coded data governable and enforce conformance so new apps can be approved safely.</li>
+            </ul>
+            <p class="section-lead">This subset is the basis for the <strong>lean replacement</strong> migration target on the <a href="roadmap.html#phase-4">roadmap</a>: once proven, Wealthcare only needs <em>these</em> resources, not all of HAPI FHIR.</p>
+        </div>
+    </section>
+
+</main>
+
+<!-- ===== SHARED FOOTER (adapted from street.riskrunners.com; byte-identical across all pages) ===== -->
+<footer>
+    <div class="brand">WEALTHCARE</div>
+    <p>Proactive Wealthcare — Personal financial wellness on the HL7 FHIR model</p>
+    <p style="margin-top: 8px;">A Risk Runners Project</p>
+    <div class="footer-links">
+        <a href="https://github.com/jeffy893/riskrunners/wiki" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            Risk Runners Codebase
+        </a>
+        <a href="https://jeffersonrichards.com" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.6 0H2.4C1.07 0 0 1.07 0 2.4v11.2C0 14.93 1.07 16 2.4 16h11.2c1.33 0 2.4-1.07 2.4-2.4V2.4C16 1.07 14.93 0 13.6 0zM4.75 13.6H2.4V6h2.35v7.6zM3.58 5.03a1.36 1.36 0 110-2.72 1.36 1.36 0 010 2.72zM13.6 13.6h-2.35V9.92c0-.88-.02-2.01-1.23-2.01-1.23 0-1.42.96-1.42 1.95v3.74H6.25V6h2.26v1.04h.03c.31-.6 1.08-1.23 2.22-1.23 2.38 0 2.82 1.56 2.82 3.6v4.19z"/></svg>
+            Connect with the Founder
+        </a>
+        <a href="https://www.riskrunners.com" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm5.3 4.7h-2.2c-.2-1-.6-1.9-1.1-2.6a6 6 0 013.3 2.6zM8 1.3c.7.8 1.2 1.9 1.5 3.4h-3C6.8 3.2 7.3 2.1 8 1.3zM1.5 9.3a6.4 6.4 0 010-2.6h2.6a13 13 0 000 2.6H1.5zm1.2 1.4h2.2c.2 1 .6 1.9 1.1 2.6a6 6 0 01-3.3-2.6zM4.9 4.7H2.7a6 6 0 013.3-2.6c-.5.7-.9 1.6-1.1 2.6zm3.1 10c-.7-.8-1.2-1.9-1.5-3.4h3c-.3 1.5-.8 2.6-1.5 3.4zm1.8-4.7H6.2a11.5 11.5 0 010-4h3.6a11.5 11.5 0 010 4zm.2 3.3c.5-.7.9-1.6 1.1-2.6h2.2a6 6 0 01-3.3 2.6zm1.4-4h2.6a6.4 6.4 0 000-2.6h-2.6a13 13 0 010 2.6z"/></svg>
+            Risk Runners Central Links
+        </a>
+    </div>
+    <div class="footer-compliance">Proof of concept — not investment advice. <a href="index.html#disclaimer">Read the full disclaimer</a>.</div>
+    <p style="margin-top: 18px;">&copy; Jefferson Richards &lt;Jefferson@richards.plus&gt;</p>
+</footer>
+<!-- ===== /SHARED FOOTER ===== -->
+
+<script src="js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wealthcare — Proactive Wealthcare</title>
+    <meta name="description" content="Proactive Wealthcare: a proof of concept that repurposes the HL7 FHIR healthcare data standard to manage the two things that measure a life — your time and your money.">
+    <meta name="author" content="Jefferson Richards">
+    <meta name="theme-color" content="#08080d">
+    <link rel="stylesheet" href="css/wealthcare.css">
+</head>
+<body>
+
+<!-- ===== SHARED HEADER (byte-identical across all pages; nav.js sets aria-current at runtime) ===== -->
+<header class="site-header">
+    <a class="wordmark" href="index.html"><span class="wordmark-eyebrow">PROACTIVE WEALTHCARE</span><span class="wordmark-name">Wealthcare</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">&#9776;</button>
+    <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <a href="index.html">Vision</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="dashboards.html">Dashboards</a>
+        <a href="roadmap.html">Roadmap</a>
+    </nav>
+</header>
+<!-- ===== /SHARED HEADER ===== -->
+
+<main>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">Risk Runners Presents</div>
+            <h1>Proactive Wealthcare</h1>
+            <p class="hero-sub">Healthcare's data standard, repurposed to manage the two things that actually measure a life — your time and your money.</p>
+        </div>
+    </section>
+
+    <!-- ===== SHARED COMPLIANCE BANNER (byte-identical across all pages) ===== -->
+    <div class="compliance-banner" role="note">
+        <strong>Proof of concept — not investment advice.</strong> Wealthcare is an educational, proof-of-concept demonstration using deterministic, hypothetical modeling. A real deployment offering personalized financial guidance would require an SEC no-action letter, or would have to restrict access to accredited investors. <a href="index.html#disclaimer">Read the full disclaimer</a>.
+    </div>
+    <!-- ===== /SHARED COMPLIANCE BANNER ===== -->
+
+    <!-- The thesis: Time + Money + Objective -->
+    <section class="section" aria-labelledby="thesis-heading">
+        <div class="section-inner">
+            <h2 id="thesis-heading" class="section-title">Time, money, and the one thing that makes them matter</h2>
+            <p class="section-lead">How you spend your time and your money is the measurable signal of a life. Those signals stream in as observations — but without an <em>objective</em> to anchor them to, all of this is for naught.</p>
+
+            <div class="grid">
+                <div class="card">
+                    <div class="card-accent"></div>
+                    <div class="card-body">
+                        <div class="card-title">Time</div>
+                        <p class="card-text">A calendar feed turns how you spend your hours into <code>time</code> observations — meetings, workouts, golf, focus blocks. Measured in minutes, coded, and streamed into the record.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-accent"></div>
+                    <div class="card-body">
+                        <div class="card-title">Money</div>
+                        <p class="card-text">A bank and transaction feed turns how you spend your dollars into <code>money</code> observations — classified against Merchant Category Codes and streamed in the same way as time.</p>
+                    </div>
+                </div>
+                <div class="card card-objective">
+                    <div class="card-accent"></div>
+                    <div class="card-body">
+                        <div class="card-title">Objective</div>
+                        <p class="card-text"><strong>Without an objective, all of this is for naught.</strong> Objectives come from the account.ninja goal-gamification tool; its exported timeline is run through the report pipeline to produce an immunized goal-funding baseline. Only once anchored to a goal do time and money become meaningful.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works, in one diagram -->
+    <section class="section" aria-labelledby="flow-heading">
+        <div class="section-inner">
+            <h2 id="flow-heading" class="section-title">How it works, in one diagram</h2>
+            <p class="section-lead">No magic, no black box. Signals flow from your feeds, get normalized against FHIR resources, anchor to an objective, and end with a human in the loop.</p>
+
+            <ol class="flow" aria-label="Wealthcare data flow, left to right">
+                <li class="flow-node"><span class="flow-label">Calendar + Bank feeds</span></li>
+                <li class="flow-arrow" aria-hidden="true">→</li>
+                <li class="flow-node"><a href="roadmap.html#phase-1">AI / LLM extraction</a></li>
+                <li class="flow-arrow" aria-hidden="true">→</li>
+                <li class="flow-node"><a href="architecture.html#observation-model">Observations</a></li>
+                <li class="flow-arrow" aria-hidden="true">→</li>
+                <li class="flow-node"><a href="architecture.html#mapping">FHIR resources (HAPI FHIR)</a></li>
+                <li class="flow-arrow" aria-hidden="true">→</li>
+                <li class="flow-node"><a href="roadmap.html#phase-2">account.ninja objective</a></li>
+                <li class="flow-arrow" aria-hidden="true">→</li>
+                <li class="flow-node"><a href="dashboards.html">Immunized baseline</a></li>
+                <li class="flow-arrow" aria-hidden="true">→</li>
+                <li class="flow-node flow-node-risk"><a href="architecture.html#riskassessment">RiskAssessment</a></li>
+                <li class="flow-arrow" aria-hidden="true">→</li>
+                <li class="flow-node"><a href="architecture.html#syndication">Syndication to a human</a></li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- What this is / isn't — full locked disclaimer -->
+    <section class="section" id="disclaimer" aria-labelledby="disclaimer-heading">
+        <div class="section-inner">
+            <h2 id="disclaimer-heading" class="section-title">What this is / isn't</h2>
+            <div class="disclaimer-panel" role="note">
+                <p><strong>Proof of concept — not investment advice.</strong> Wealthcare is an educational, proof-of-concept demonstration using deterministic, hypothetical modeling. It is <strong>not investment advice</strong> and recommends <strong>no securities, allocations, or changes to any financial plan</strong>. Figures shown are illustrative representative data, not projections of real returns. A real deployment that offered personalized financial guidance would require an <strong>SEC no-action letter</strong>, or would have to <strong>restrict access to accredited investors</strong> — a significant regulatory hurdle that this proof of concept does not clear. Risk, health, and financial figures are illustrative and are not medical, actuarial, or financial determinations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three cross-link cards -->
+    <section class="section" aria-labelledby="explore-heading">
+        <div class="section-inner">
+            <h2 id="explore-heading" class="section-title">Explore the concept</h2>
+            <div class="grid">
+                <a class="card" href="architecture.html">
+                    <div class="card-accent"></div>
+                    <div class="card-body">
+                        <div class="card-title">Architecture</div>
+                        <p class="card-text">The FHIR lineage, the front-end ↔ back-end resource mapping, the Observation and rolling-metrics model, the RiskAssessment example, governance, and the minimum sufficient resource set.</p>
+                    </div>
+                </a>
+                <a class="card" href="dashboards.html">
+                    <div class="card-accent"></div>
+                    <div class="card-body">
+                        <div class="card-title">Dashboards</div>
+                        <p class="card-text">Phone and desktop product mockups: the Client overview, the Observations feed, rolling metrics, the RiskAssessment card, the immunized goal-funding view, and the human-in-the-loop syndication flow.</p>
+                    </div>
+                </a>
+                <a class="card" href="roadmap.html">
+                    <div class="card-accent"></div>
+                    <div class="card-body">
+                        <div class="card-title">Roadmap</div>
+                        <p class="card-text">Buy vs build on HAPI FHIR, the phased plan from repurpose to lean rebuild, the data-source integrations, AI/LLM extraction, and the governance workflow.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- ===== SHARED FOOTER (adapted from street.riskrunners.com; byte-identical across all pages) ===== -->
+<footer>
+    <div class="brand">WEALTHCARE</div>
+    <p>Proactive Wealthcare — Personal financial wellness on the HL7 FHIR model</p>
+    <p style="margin-top: 8px;">A Risk Runners Project</p>
+    <div class="footer-links">
+        <a href="https://github.com/jeffy893/riskrunners/wiki" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            Risk Runners Codebase
+        </a>
+        <a href="https://jeffersonrichards.com" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.6 0H2.4C1.07 0 0 1.07 0 2.4v11.2C0 14.93 1.07 16 2.4 16h11.2c1.33 0 2.4-1.07 2.4-2.4V2.4C16 1.07 14.93 0 13.6 0zM4.75 13.6H2.4V6h2.35v7.6zM3.58 5.03a1.36 1.36 0 110-2.72 1.36 1.36 0 010 2.72zM13.6 13.6h-2.35V9.92c0-.88-.02-2.01-1.23-2.01-1.23 0-1.42.96-1.42 1.95v3.74H6.25V6h2.26v1.04h.03c.31-.6 1.08-1.23 2.22-1.23 2.38 0 2.82 1.56 2.82 3.6v4.19z"/></svg>
+            Connect with the Founder
+        </a>
+        <a href="https://www.riskrunners.com" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 100 16A8 8 0 008 0zm5.3 4.7h-2.2c-.2-1-.6-1.9-1.1-2.6a6 6 0 013.3 2.6zM8 1.3c.7.8 1.2 1.9 1.5 3.4h-3C6.8 3.2 7.3 2.1 8 1.3zM1.5 9.3a6.4 6.4 0 010-2.6h2.6a13 13 0 000 2.6H1.5zm1.2 1.4h2.2c.2 1 .6 1.9 1.1 2.6a6 6 0 01-3.3-2.6zM4.9 4.7H2.7a6 6 0 013.3-2.6c-.5.7-.9 1.6-1.1 2.6zm3.1 10c-.7-.8-1.2-1.9-1.5-3.4h3c-.3 1.5-.8 2.6-1.5 3.4zm1.8-4.7H6.2a11.5 11.5 0 010-4h3.6a11.5 11.5 0 010 4zm.2 3.3c.5-.7.9-1.6 1.1-2.6h2.2a6 6 0 01-3.3 2.6zm1.4-4h2.6a6.4 6.4 0 000-2.6h-2.6a13 13 0 010 2.6z"/></svg>
+            Risk Runners Central Links
+        </a>
+    </div>
+    <div class="footer-compliance">Proof of concept — not investment advice. <a href="index.html#disclaimer">Read the full disclaimer</a>.</div>
+    <p style="margin-top: 18px;">&copy; Jefferson Richards &lt;Jefferson@richards.plus&gt;</p>
+</footer>
+<!-- ===== /SHARED FOOTER ===== -->
+
+<script src="js/nav.js"></script>
+</body>
+</html>
