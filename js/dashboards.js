@@ -149,18 +149,36 @@
         }
     }
 
-    /* Shared dark-theme axis/legend options for both charts. */
-    function baseOptions(titleText) {
+    /* Shared dark-theme axis/legend options for both charts. On narrow screens
+       the title/legend/tick fonts shrink and the legend box markers shrink so
+       everything fits inside the device frame without clipping. */
+    function isNarrow() {
+        return typeof window !== 'undefined' && window.innerWidth <= 600;
+    }
+
+    function baseOptions(titleText, shortTitle) {
+        var narrow = isNarrow();
+        if (narrow && shortTitle) { titleText = shortTitle; }
+        var titleSize = narrow ? 10 : 14;
+        var labelSize = narrow ? 9 : 12;
+        var tickSize = narrow ? 8 : 12;
         return {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                title: { display: true, text: titleText, color: '#ffffff' },
-                legend: { labels: { color: '#d0d0d0' } }
+                title: { display: true, text: titleText, color: '#ffffff', font: { size: titleSize } },
+                legend: {
+                    labels: {
+                        color: '#d0d0d0',
+                        font: { size: labelSize },
+                        boxWidth: narrow ? 12 : 40,
+                        padding: narrow ? 8 : 10
+                    }
+                }
             },
             scales: {
-                x: { ticks: { color: '#888888' }, grid: { color: 'rgba(255,255,255,0.06)' } },
-                y: { ticks: { color: '#888888' }, grid: { color: 'rgba(255,255,255,0.06)' } }
+                x: { ticks: { color: '#888888', font: { size: tickSize } }, grid: { color: 'rgba(255,255,255,0.06)' } },
+                y: { ticks: { color: '#888888', font: { size: tickSize } }, grid: { color: 'rgba(255,255,255,0.06)' } }
             }
         };
     }
@@ -226,7 +244,7 @@
                     }
                 ]
             },
-            options: baseOptions('Rolling money-spend vs \u00B11.5\u03C3 deviation band (W1\u2013W12)')
+            options: baseOptions('Rolling money-spend vs \u00B11.5\u03C3 deviation band (W1\u2013W12)', 'Money spend vs \u00B11.5\u03C3 band')
         });
     }
 
@@ -246,7 +264,7 @@
             return i === timeUse.breachIndex ? v : null;
         });
 
-        var options = baseOptions('Weekly time utilization (share of logged hours) with Leisure/Golf drift detection');
+        var options = baseOptions('Weekly time utilization (share of logged hours) with Leisure/Golf drift detection', 'Time utilization & drift');
         // Stacked, 0\u2013100% axis for the bar datasets.
         options.scales.x.stacked = true;
         options.scales.y.stacked = true;
@@ -333,7 +351,7 @@
                     }
                 ]
             },
-            options: baseOptions('Immunized goal funding to $90,000 \u2014 10%-down vs 20%-down (Jefferson, 60 cycles)')
+            options: baseOptions('Immunized goal funding to $90,000 \u2014 10%-down vs 20%-down (Jefferson, 60 cycles)', 'Goal funding: 10% vs 20% down')
         });
     }
 

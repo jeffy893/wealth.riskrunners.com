@@ -1006,7 +1006,14 @@ code {
     position: relative;
     height: 320px;
     width: 100%;
+    max-width: 100%;
     margin-bottom: 16px;
+}
+
+/* Chart.js draws into this canvas; keep it bounded by its wrapper so a slow
+   responsive-resize can never paint wider than the device frame. */
+.chart-canvas-wrap > canvas {
+    max-width: 100% !important;
 }
 
 /* role=status note shown when Chart.js is unavailable (§10.2) */
@@ -1110,5 +1117,15 @@ code {
 }
 
 @media (max-width: 600px) {
-    .chart-canvas-wrap { height: 260px; }
+    /* Taller canvas so the wrapped legend + 12 bars stay legible on a phone. */
+    .chart-canvas-wrap { height: 300px; }
+
+    /* Tighten the device frames so the chart/table get the full phone width. */
+    .device-desktop .device-screen,
+    .device-phone .device-screen { padding: 12px; }
+
+    /* The paired tables scroll horizontally inside the frame; hint it on mobile. */
+    .table-scroll { margin: 14px 0; }
+    .table-scroll .data-table { min-width: 480px; font-size: 0.84em; }
+    .data-table th, .data-table td { padding: 8px 10px; }
 }
