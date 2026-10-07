@@ -340,9 +340,34 @@ a { color: var(--accent); }
 .data-table tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
 
 /* Tier emphasis helpers (reused by dashboards/architecture) */
-.tier-low { color: var(--tier-low); }
-.tier-med { color: var(--tier-med); }
-.tier-high { color: var(--tier-high); }
+.tier-low { color: var(--tier-low); font-weight: 600; }
+.tier-med { color: var(--tier-med); font-weight: 600; }
+.tier-high { color: var(--tier-high); font-weight: 600; }
+
+/* §5.5 funding-scenario emphasis — must match the chart's scenario line colors
+   (magenta 10% / cyan 20%), and must NOT be any of the three tier colors. */
+.scenario-10 { color: #e05fd8; font-weight: 600; }
+.scenario-20 { color: #22d3ee; font-weight: 600; }
+
+.funding-howto { font-size: 0.95em; color: var(--muted); }
+.funding-howto strong { color: #e6e6e6; }
+
+/* §5.5 funding tables: visually separate the "lump sum" column group from the
+   "per-cycle vesting" group with a divider before the first per-cycle column. */
+.funding-table th,
+.funding-table td { text-align: right; white-space: nowrap; }
+.funding-table th[scope="row"] { text-align: left; }
+.funding-table thead th[scope="colgroup"] {
+    text-align: center;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.82em;
+    letter-spacing: 1px;
+    color: var(--muted);
+}
+/* divider between the lump-sum group (cols 2-5) and per-cycle group (cols 6-9) */
+.funding-table th:nth-child(6),
+.funding-table tbody td:nth-child(6) { border-left: 2px solid var(--border); }
+.funding-table thead tr:first-child th:nth-child(3) { border-left: 2px solid var(--border); }
 
 /* ── Timeline strip (horizontal, stacks on mobile) ── */
 .timeline {

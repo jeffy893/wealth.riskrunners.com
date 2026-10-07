@@ -306,79 +306,106 @@
     <section class="section" id="goal-funding" aria-labelledby="funding-heading">
         <div class="section-inner">
             <h2 id="funding-heading" class="section-title">§5.5 — Immunized goal-funding view</h2>
-            <p class="section-lead">The <a href="https://account.ninja" target="_blank" rel="noopener noreferrer">account.ninja</a> → immunized-baseline integration. The three LOW/MEDIUM/HIGH tiers use a 40/35/25 barbell split with return midpoints 4.5% / 7% / 11%, compared across a 10%-down vs 20%-down lump-sum scenario. Figures are copied to the cent from the deterministic account-ninja vesting-schedule CSVs.</p>
+            <p class="section-lead">The <a href="https://account.ninja" target="_blank" rel="noopener noreferrer">account.ninja</a> → immunized-baseline integration. Money is placed into three interest-earning tiers — <span class="tier-low">LOW</span> / <span class="tier-med">MEDIUM</span> / <span class="tier-high">HIGH</span> risk — using a fixed <strong>40 / 35 / 25 barbell split</strong> (midpoint returns 4.5% / 7% / 11%). We compare two ways to get started: putting <strong>10% down</strong> vs <strong>20% down</strong> up front. The chart below plots total balance growing to the $90,000 goal for each scenario — <span class="scenario-10">10% down in magenta</span>, <span class="scenario-20">20% down in cyan</span> — deliberately colored apart from the three risk tiers so a scenario line is never mistaken for a tier.</p>
+            <p class="section-lead funding-howto">How to read the tables: the <strong>Up-front lump sum</strong> columns show the one-time down payment and how the 40/35/25 split sends it into LOW/MED/HIGH. The <strong>Per-cycle vesting</strong> columns show what you contribute to each tier <em>every cycle</em> thereafter. Put more down up front (20%) and the per-cycle amount you still need drops — that's the relief compound interest buys you. Figures are copied to the cent from the deterministic account-ninja vesting-schedule CSVs.</p>
             <figure class="mockup chart-figure">
                 <figcaption class="mockup-caption">Desktop · Goal-funding chart</figcaption>
                 <div class="device-frame device-desktop">
                     <div class="device-bar" aria-hidden="true"><span></span><span></span><span></span></div>
                     <div class="device-screen">
                         <div class="chart-canvas-wrap">
-                            <canvas id="funding-chart" aria-label="Line chart of total balance growing to the $90,000 goal across 60 cycles for the Jefferson example, comparing the 10%-down and 20%-down scenarios. The data table below carries the same numbers." role="img"></canvas>
+                            <canvas id="funding-chart" aria-label="Line chart of total balance growing to the $90,000 goal across 60 cycles for the Jefferson example, comparing the 10%-down scenario (magenta line) and the 20%-down scenario (cyan line) against the goal target. These scenario colors are distinct from the LOW/MEDIUM/HIGH tier colors. The data table below carries the same numbers." role="img"></canvas>
                         </div>
 
                         <div class="table-scroll">
-                            <table class="data-table">
-                                <caption>§5.5 Jefferson — goal $90,000, 60 cycles (per-cycle vesting by tier)</caption>
+                            <table class="data-table funding-table">
+                                <caption>§5.5 Jefferson — goal $90,000, 60 cycles</caption>
                                 <thead>
                                     <tr>
-                                        <th scope="col">Scenario</th>
-                                        <th scope="col">Lump sum</th>
+                                        <th scope="col" rowspan="2">Scenario</th>
+                                        <th scope="colgroup" colspan="4">Up-front lump sum (split 40/35/25)</th>
+                                        <th scope="colgroup" colspan="4">Per-cycle vesting (every cycle)</th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">Total down</th>
+                                        <th scope="col" class="tier-low">LOW 40%</th>
+                                        <th scope="col" class="tier-med">MED 35%</th>
+                                        <th scope="col" class="tier-high">HIGH 25%</th>
                                         <th scope="col" class="tier-low">LOW</th>
-                                        <th scope="col" class="tier-med">MEDIUM</th>
+                                        <th scope="col" class="tier-med">MED</th>
                                         <th scope="col" class="tier-high">HIGH</th>
-                                        <th scope="col">Per-cycle total</th>
+                                        <th scope="col">Total / cycle</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <th scope="row">10% down</th>
-                                        <td>$9,000 <span class="tier-low">(3600)</span> <span class="tier-med">(3150)</span> <span class="tier-high">(2250)</span></td>
+                                        <td><strong>$9,000</strong></td>
+                                        <td class="tier-low">$3,600</td>
+                                        <td class="tier-med">$3,150</td>
+                                        <td class="tier-high">$2,250</td>
                                         <td class="tier-low">$469.98</td>
                                         <td class="tier-med">$378.85</td>
                                         <td class="tier-high">$235.34</td>
-                                        <td>$1,084.16</td>
+                                        <td><strong>$1,084.16</strong></td>
                                     </tr>
                                     <tr>
                                         <th scope="row">20% down</th>
-                                        <td>$18,000 <span class="tier-low">(7200)</span> <span class="tier-med">(6300)</span> <span class="tier-high">(4500)</span></td>
+                                        <td><strong>$18,000</strong></td>
+                                        <td class="tier-low">$7,200</td>
+                                        <td class="tier-med">$6,300</td>
+                                        <td class="tier-high">$4,500</td>
                                         <td class="tier-low">$402.96</td>
                                         <td class="tier-med">$316.62</td>
                                         <td class="tier-high">$186.59</td>
-                                        <td>$906.17</td>
+                                        <td><strong>$906.17</strong></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
                         <div class="table-scroll">
-                            <table class="data-table">
-                                <caption>§5.5 Kenneth — goal $48,000, 12 cycles (per-cycle vesting by tier)</caption>
+                            <table class="data-table funding-table">
+                                <caption>§5.5 Kenneth — goal $48,000, 12 cycles</caption>
                                 <thead>
                                     <tr>
-                                        <th scope="col">Scenario</th>
-                                        <th scope="col">Lump sum</th>
+                                        <th scope="col" rowspan="2">Scenario</th>
+                                        <th scope="colgroup" colspan="4">Up-front lump sum (split 40/35/25)</th>
+                                        <th scope="colgroup" colspan="4">Per-cycle vesting (every cycle)</th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">Total down</th>
+                                        <th scope="col" class="tier-low">LOW 40%</th>
+                                        <th scope="col" class="tier-med">MED 35%</th>
+                                        <th scope="col" class="tier-high">HIGH 25%</th>
                                         <th scope="col" class="tier-low">LOW</th>
-                                        <th scope="col" class="tier-med">MEDIUM</th>
+                                        <th scope="col" class="tier-med">MED</th>
                                         <th scope="col" class="tier-high">HIGH</th>
-                                        <th scope="col">Per-cycle total</th>
+                                        <th scope="col">Total / cycle</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <th scope="row">10% down</th>
-                                        <td>$4,800 <span class="tier-low">(1920)</span> <span class="tier-med">(1680)</span> <span class="tier-high">(1200)</span></td>
+                                        <td><strong>$4,800</strong></td>
+                                        <td class="tier-low">$1,920</td>
+                                        <td class="tier-med">$1,680</td>
+                                        <td class="tier-high">$1,200</td>
                                         <td class="tier-low">$1,403.84</td>
                                         <td class="tier-med">$1,210.96</td>
                                         <td class="tier-high">$845.27</td>
-                                        <td>$3,460.07</td>
+                                        <td><strong>$3,460.07</strong></td>
                                     </tr>
                                     <tr>
                                         <th scope="row">20% down</th>
-                                        <td>$9,600 <span class="tier-low">(3840)</span> <span class="tier-med">(3360)</span> <span class="tier-high">(2400)</span></td>
+                                        <td><strong>$9,600</strong></td>
+                                        <td class="tier-low">$3,840</td>
+                                        <td class="tier-med">$3,360</td>
+                                        <td class="tier-high">$2,400</td>
                                         <td class="tier-low">$1,239.97</td>
                                         <td class="tier-med">$1,065.67</td>
                                         <td class="tier-high">$739.30</td>
-                                        <td>$3,044.93</td>
+                                        <td><strong>$3,044.93</strong></td>
                                     </tr>
                                 </tbody>
                             </table>

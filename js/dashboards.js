@@ -26,6 +26,13 @@
     var CAT_LEISURE = '#9678ff';  /* violet — Leisure/Golf    */
     var CAT_ADMIN = '#888';       /* grey   — Admin/Finance   */
 
+    /* §5.5 funding scenario colors — intentionally NOT any of the three tier
+       colors (LOW blue / MED green / HIGH red), so a scenario line can never be
+       confused with a risk tier. 10%-down = magenta, 20%-down = cyan.          */
+    var SCENARIO_10 = '#e05fd8';  /* magenta — 10% down scenario */
+    var SCENARIO_20 = '#22d3ee';  /* cyan    — 20% down scenario */
+    var GOAL_LINE = '#c0c0c8';    /* light grey dashed — the goal target line */
+
     /* ========================================================================
        §5.3 ROLLING METRICS — locked 12-point weekly series (design §5.3).
        Representative figures defined by the design (NOT a pipeline output).
@@ -324,8 +331,8 @@
                     {
                         label: '10% down (lump $9,000)',
                         data: j.down10.balance,
-                        borderColor: TIER_HIGH,
-                        backgroundColor: 'rgba(220,38,38,0.12)',
+                        borderColor: SCENARIO_10,
+                        backgroundColor: SCENARIO_10,
                         borderWidth: 2,
                         pointRadius: 3,
                         fill: false
@@ -333,8 +340,8 @@
                     {
                         label: '20% down (lump $18,000)',
                         data: j.down20.balance,
-                        borderColor: TIER_LOW,
-                        backgroundColor: 'rgba(37,99,235,0.12)',
+                        borderColor: SCENARIO_20,
+                        backgroundColor: SCENARIO_20,
                         borderWidth: 2,
                         pointRadius: 3,
                         fill: false
@@ -342,8 +349,8 @@
                     {
                         label: 'Goal $90,000',
                         data: j.cyclePoints.map(function () { return j.goal; }),
-                        borderColor: TIER_MED,
-                        backgroundColor: TIER_MED,
+                        borderColor: GOAL_LINE,
+                        backgroundColor: GOAL_LINE,
                         borderWidth: 1,
                         borderDash: [4, 4],
                         pointRadius: 0,
