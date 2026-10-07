@@ -111,7 +111,7 @@ fully readable.
 
 ## Author & attribution
 
-Author: **Jefferson Richards <Jefferson@richards.plus>**
+Author: **Jefferson Richards**
 
 A Risk Runners project. © Jefferson Richards. Provided as a proof-of-concept demonstration.
 
@@ -119,3 +119,14 @@ The not-advice framing mirrors the companion
 [account-ninja pipeline README](../../04_integralmass-repo/value.integralmass.com/account-ninja/README.md):
 hypothetical modeling for education and goal exploration — not financial advice, and no
 recommendation of securities or allocations.
+
+---
+
+## License
+
+Licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**. See the
+[LICENSE](LICENSE) file for the full text.
+
+The AGPL's network-use clause (section 13) is deliberate: if this proof of concept is ever
+developed into a hosted service that users interact with over a network, that service's
+complete corresponding source must be offered to its users.

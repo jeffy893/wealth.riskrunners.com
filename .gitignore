@@ -1,0 +1,5 @@
+# macOS
+.DS_Store
+
+# Internal planning / agent artifacts — not part of the published site
+.agents/

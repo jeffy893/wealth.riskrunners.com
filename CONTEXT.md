@@ -212,4 +212,4 @@ replacement** limited to that subset and **migrate off HAPI FHIR** onto it.
 > Risk, health, and financial figures are illustrative and are not medical, actuarial, or
 > financial determinations.
 
-*Author: Jefferson Richards <Jefferson@richards.plus> — a Risk Runners project.*
+*Author: Jefferson Richards — a Risk Runners project.*

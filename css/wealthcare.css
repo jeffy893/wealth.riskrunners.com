@@ -298,12 +298,20 @@ a { color: var(--accent); }
 }
 
 /* ── Semantic table ── */
+.table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 20px 0;
+}
+
 .data-table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
     font-size: 0.92em;
 }
+
+.table-scroll .data-table { margin: 0; min-width: 560px; }
 
 .data-table caption {
     caption-side: top;
@@ -595,4 +603,512 @@ footer .brand {
     .device-phone .device-screen { padding: 14px; }
 
     .compliance-banner { margin: 16px; }
+}
+
+/* ============================================================================
+   PAGE SECTIONS (FEAT-002) — index.html, architecture.html, roadmap.html
+   Shared content-section primitives used by the three non-chart pages.
+   ========================================================================== */
+.section { padding: 48px 20px; }
+
+.section-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 1.9em;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 14px;
+    line-height: 1.25;
+}
+
+.section-lead {
+    color: var(--muted);
+    font-size: 1.05em;
+    line-height: 1.8;
+    margin-bottom: 18px;
+}
+
+.section-lead:last-child { margin-bottom: 0; }
+
+/* Page intro title/eyebrow for architecture + roadmap (the single <h1>) */
+.page-eyebrow { margin-bottom: 10px; }
+
+.page-title {
+    font-size: clamp(2em, 5vw, 3em);
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 18px;
+}
+
+code {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.9em;
+    color: var(--accent);
+    background: rgba(47, 184, 160, 0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+/* ── index.html: Objective card emphasis ── */
+.card-objective {
+    border-color: rgba(47, 184, 160, 0.5);
+    box-shadow: 0 0 0 1px rgba(47, 184, 160, 0.25), 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.card-objective .card-accent { height: 6px; }
+
+.card-objective .card-title { color: var(--accent); }
+
+/* ── index.html: "How it works" flow diagram (CSS/HTML only, no library) ── */
+.flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    list-style: none;
+    margin-top: 24px;
+    padding: 0;
+}
+
+.flow-node {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.9em;
+    color: var(--text);
+    text-align: center;
+}
+
+.flow-node a { color: var(--accent); text-decoration: none; }
+.flow-node a:hover { text-decoration: underline; }
+
+.flow-node-risk { border-color: rgba(220, 50, 80, 0.5); }
+.flow-node-risk a { color: var(--risk); }
+
+.flow-label { color: var(--text); }
+
+.flow-arrow {
+    color: var(--accent);
+    font-size: 1.2em;
+    flex-shrink: 0;
+}
+
+/* ── index.html: full disclaimer panel ── */
+.disclaimer-panel {
+    background: var(--panel);
+    border: 1px solid rgba(47, 184, 160, 0.45);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 24px;
+    color: #e6e6e6;
+    line-height: 1.8;
+}
+
+.disclaimer-panel strong { color: var(--accent); }
+
+/* ── architecture.html + roadmap.html: spec/justification lists ── */
+.spec-list {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+}
+
+.spec-list li {
+    position: relative;
+    padding: 10px 0 10px 22px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    line-height: 1.75;
+}
+
+.spec-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+}
+
+.spec-list li:last-child { border-bottom: none; }
+
+/* ── architecture.html: two-lane connector column + risk chip ── */
+.connector-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+}
+
+.connector-column .connector { line-height: 2.6; }
+
+.chip-risk {
+    border-color: rgba(220, 50, 80, 0.5);
+    color: var(--risk);
+}
+
+/* ── architecture.html: RiskAssessment figure + mandatory micro-disclaimer ── */
+.risk-figure { color: var(--risk); }
+
+.micro-disclaimer {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.82em;
+    color: var(--muted);
+    font-style: normal;
+}
+
+.micro-disclaimer-block {
+    display: block;
+    margin-top: 10px;
+    padding: 12px 16px;
+    background: rgba(220, 50, 80, 0.06);
+    border: 1px solid rgba(220, 50, 80, 0.3);
+    border-radius: 8px;
+    line-height: 1.7;
+}
+
+/* ── roadmap.html: phased plan ── */
+.phase-list {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0;
+}
+
+.phase {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 20px;
+    padding: 22px 0;
+    border-top: 1px solid var(--border);
+}
+
+.phase:first-child { border-top: none; }
+
+.phase-marker {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    padding-top: 4px;
+}
+
+.phase-title {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.phase-body p { margin-bottom: 8px; color: var(--text); line-height: 1.7; }
+.phase-body p:last-child { margin-bottom: 0; }
+.phase-body strong { color: #fff; }
+.phase-body a { color: var(--accent); }
+
+/* ── roadmap.html: governance workflow + design note ── */
+.workflow-list {
+    margin: 18px 0 0 20px;
+    padding: 0;
+    color: var(--text);
+}
+
+.workflow-list li { padding: 6px 0; line-height: 1.7; }
+
+.design-note {
+    margin-top: 18px;
+    padding: 16px 20px;
+    background: rgba(47, 184, 160, 0.06);
+    border: 1px solid rgba(47, 184, 160, 0.3);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    color: #e6e6e6;
+    line-height: 1.7;
+}
+
+.design-note strong { color: var(--accent); }
+
+@media (max-width: 600px) {
+    .section { padding: 32px 16px; }
+    .section-title { font-size: 1.5em; }
+    .flow { flex-direction: column; align-items: stretch; }
+    .flow-node { text-align: left; }
+    .flow-arrow { transform: rotate(90deg); align-self: center; }
+    .phase { grid-template-columns: 1fr; gap: 8px; }
+}
+
+/* ============================================================================
+   DASHBOARDS (FEAT-003) — mockup gallery primitives for dashboards.html only.
+   Device frames, tiles, observations feed, chart figures + fallback note,
+   RiskAssessment card, and the syndication message thread.
+   ========================================================================== */
+
+/* Caption/label under each device-frame mockup */
+.mockup { margin: 28px 0 0; }
+
+.mockup-caption {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.78em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+}
+
+/* "illustrative" badge + persona header (§5.1, §5.6) */
+.illustrative-badge {
+    display: inline-block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.72em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(47, 184, 160, 0.1);
+    border: 1px solid rgba(47, 184, 160, 0.4);
+    border-radius: 20px;
+    padding: 2px 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.persona-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+    font-size: 1.05em;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* §5.1 four summary tiles */
+.tile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+}
+
+.tile {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.tile-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.72em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.tile-value {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+}
+
+.tile-value .illustrative-badge { font-size: 0.42em; font-weight: 400; }
+
+.tile-risk .tile-value { color: var(--risk); }
+
+/* §5.2 observations feed */
+.feed {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 520px;
+    overflow-y: auto;
+}
+
+.feed-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 12px;
+    padding: 16px 4px;
+    border-bottom: 1px solid var(--border);
+}
+
+.feed-row:last-child { border-bottom: none; }
+
+.feed-code {
+    grid-column: 1;
+    grid-row: 1;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.78em;
+    color: var(--accent);
+    letter-spacing: 1px;
+}
+
+.feed-label {
+    grid-column: 1;
+    grid-row: 2;
+    color: var(--text);
+    font-size: 0.9em;
+}
+
+.feed-value {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: right;
+    font-weight: 700;
+    color: #fff;
+    font-size: 0.95em;
+}
+
+.feed-meta {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: right;
+    font-size: 0.72em;
+    color: var(--muted);
+    font-family: 'Courier Prime', monospace;
+}
+
+.feed-chip {
+    display: inline-block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.68em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0 6px;
+    color: var(--muted);
+    margin-right: 6px;
+}
+
+/* Row 11 anomaly — golf-cart breach in risk red */
+.feed-row-anomaly {
+    background: rgba(220, 50, 80, 0.08);
+    border-left: 3px solid var(--risk);
+    padding-left: 8px;
+}
+
+.feed-row-anomaly .feed-code,
+.feed-row-anomaly .feed-value { color: var(--risk); }
+
+/* §5.3 / §5.5 chart figure + paired table wrapper */
+.chart-figure { margin: 0; }
+
+.chart-canvas-wrap {
+    position: relative;
+    height: 320px;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+/* role=status note shown when Chart.js is unavailable (§10.2) */
+.charts-fallback {
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    background: rgba(220, 50, 80, 0.06);
+    border: 1px solid rgba(220, 50, 80, 0.3);
+    border-radius: 8px;
+    color: #e6e6e6;
+    font-size: 0.88em;
+}
+
+/* §5.5 goal-funding note */
+.funding-note {
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: rgba(47, 184, 160, 0.06);
+    border: 1px solid rgba(47, 184, 160, 0.3);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    color: #e6e6e6;
+    line-height: 1.7;
+    font-size: 0.9em;
+}
+
+.funding-note strong { color: var(--accent); }
+
+/* §5.4 RiskAssessment card */
+.risk-card {
+    background: var(--panel);
+    border: 1px solid rgba(220, 50, 80, 0.4);
+    border-left: 4px solid var(--risk);
+    border-radius: 10px;
+    padding: 22px;
+    max-width: 640px;
+}
+
+.risk-card h3 { color: #fff; margin-bottom: 10px; font-size: 1.15em; }
+
+.risk-card .spec-list li::before { color: var(--risk); }
+
+/* §5.6 syndication message thread */
+.thread {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.thread-msg {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 0.9em;
+    line-height: 1.6;
+}
+
+.thread-msg a { color: var(--accent); }
+
+.badge-pipeline {
+    display: inline-block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.68em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--tier-low);
+    background: rgba(37, 99, 235, 0.12);
+    border: 1px solid rgba(37, 99, 235, 0.4);
+    border-radius: 10px;
+    padding: 1px 8px;
+    margin-left: 6px;
+}
+
+.slot-list { list-style: none; margin: 6px 0 0; padding: 0; }
+
+.slot {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: rgba(47, 184, 160, 0.08);
+    border: 1px solid rgba(47, 184, 160, 0.4);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    color: var(--accent);
+    font-size: 0.9em;
+    font-family: 'Courier Prime', monospace;
+    cursor: pointer;
+}
+
+.slot:hover { background: rgba(47, 184, 160, 0.14); }
+
+.slot:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.thread-caption {
+    margin-top: 6px;
+    font-size: 0.82em;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+    .chart-canvas-wrap { height: 260px; }
 }
